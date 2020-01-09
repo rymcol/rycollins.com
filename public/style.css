@@ -1,8 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
-#fold {
-	background: #080808;
+body {
 	font-family: 'Open Sans', sans-serif;
+}
+
+#fold, #footer {
+	background: #080808;
 }
 
 #fold img.clip-bottom {
@@ -13,6 +16,10 @@
 h1, h2, .social {
 	font-size: 50px;
 	color: #F4F3F1;
+}
+
+h3 {
+	margin-top: 40px;
 }
 
 span h2 {
@@ -32,6 +39,19 @@ h1.mobile {
 	background-image: url("img/ry.png");
 	background-position:center;
 	background-size:cover;
+}
+
+.content p {
+	padding-bottom: 40px;
+}
+
+#footer {
+	color: #333;
+}
+
+#footer p {
+	padding-top: 20px;
+	font-size: 10px;
 }
 
 /* === Social === */
