@@ -42,7 +42,17 @@ h1.mobile {
 }
 
 .content p {
-	padding-bottom: 40px;
+	padding-bottom: 10px;
+}
+
+.content ul.recent {
+	margin-block-start: none;
+}
+
+.content ul.recent li {
+	list-style: none;
+	padding-top: 15px;
+	
 }
 
 #footer {
@@ -50,6 +60,7 @@ h1.mobile {
 }
 
 #footer p {
+	color: #AAA;
 	padding-top: 20px;
 	font-size: 10px;
 }
