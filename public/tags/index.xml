@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Ryan Collins</title>
-    <link>http://rycollins.com/tags/</link>
+    <link>https://rycollins.com/tags/</link>
     <description>Recent content in Tags on Ryan Collins</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 30 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://rycollins.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 30 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://rycollins.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>privacy</title>
-      <link>http://rycollins.com/tags/privacy/</link>
+      <link>https://rycollins.com/tags/privacy/</link>
       <pubDate>Fri, 30 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://rycollins.com/tags/privacy/</guid>
+      <guid>https://rycollins.com/tags/privacy/</guid>
       <description></description>
     </item>
     
     <item>
       <title>shortcodes</title>
-      <link>http://rycollins.com/tags/shortcodes/</link>
+      <link>https://rycollins.com/tags/shortcodes/</link>
       <pubDate>Fri, 30 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://rycollins.com/tags/shortcodes/</guid>
+      <guid>https://rycollins.com/tags/shortcodes/</guid>
       <description></description>
     </item>
     

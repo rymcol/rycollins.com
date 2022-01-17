@@ -1,4 +1,4 @@
-baseURL = 'http://rycollins.com/'
+baseURL = 'https://rycollins.com/'
 languageCode = 'en-us'
 title = 'Ryan Collins'
 theme = "blist"
