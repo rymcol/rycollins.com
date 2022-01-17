@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shortcodes on Ryan Collins</title>
+    <link>http://rycollins.com/tags/shortcodes/</link>
+    <description>Recent content in shortcodes on Ryan Collins</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 30 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://rycollins.com/tags/shortcodes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Interview on Hashing it Out Podcast</title>
+      <link>http://rycollins.com/blog/hashing-it-out-podcast/</link>
+      <pubDate>Fri, 30 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://rycollins.com/blog/hashing-it-out-podcast/</guid>
+      <description>&lt;p&gt;Watch Dr. Corey Petty interview me on the Hashing it Out Podcast Series on YouTube!&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,112 @@
+baseURL = 'http://rycollins.com/'
+languageCode = 'en-us'
+title = 'Ryan Collins'
+theme = "blist"
+
+DefaultContentLanguage = "en"
+DefaultContentLanguageInSubdir = true
+[languages]
+  [languages.en]
+    contentDir = "content/en" #English
+    weight = 1
+    languageName = "English"
+    [languages.en.params]
+      introTitle = "Hey! I'm Ryan"
+      introSubtitle = "I am a web3/crypto infrastructure and security (DevOps/SRE) specialist who enjoys RV camping and amateur radio"
+      introPhoto = "/ryan.jpg"
+      # logo = "/blist-logo.png"
+    [[languages.en.menu.main]]
+        name = "Blog"
+        url = "blog"
+        weight = 1
+
+    [[languages.en.menu.main]]
+        name = "About"
+        url = "page/about/"
+        weight = 2
+
+    # [[languages.en.menu.main]]
+    #     name = "Tags"
+    #     url = "tags"
+    #     weight = 3
+
+    # [[languages.en.menu.main]]
+    #     name = "Top Post"
+    #     url = "/en/blog/emoji-support/"
+    #     weight = 4
+
+  # [languages.de]
+  #   contentDir = "content/de" # Deutsch
+  #   weight = 2
+  #   languageName = "Deutsch"
+  #   title = "Blist (mehrsprachig)"
+  #   description = "Modernes Blog-Theme für Ihre Hugo-Site."
+  #   [languages.de.params]
+  #     introTitle = "Hallo, ich bin Katheryn Fox"
+  #     introSubtitle = "26-jährige Junior-Entwicklerin, die Spaß an sozialen Kartenspielen, Bloggen und Malen hat"
+  #     introPhoto = "/picture.jpg"
+  #     logo = "/blist-logo-de.png"
+  #   [[languages.de.menu.main]]
+  #       name = "Blog"
+  #       url = "blog"
+  #       weight = 1
+
+  #   [[languages.de.menu.main]]
+  #       name = "Über mich"
+  #       url = "page/about/"
+  #       weight = 2
+
+  #   [[languages.de.menu.main]]
+  #       name = "Tags"
+  #       url = "tags"
+  #       weight = 3
+
+  # [languages.dy]
+  #   contentDir = "content/dy" #Example language
+  #   weight = 3
+  #   languageName = "Test Language"
+
+[params]
+  # Enable the darkmode toggle in header
+  darkModeToggle = true
+  
+  # Enable search in header
+  enableSearch = true
+
+  # Custom copyright - optional
+  copyright = "Copyright © 2022 Ryan Collins; All rights reserved"
+  favicon = "/favicon.svg"
+
+  # Color for the intro details and social links block, not applicable for dark mode
+  # Supported values: Any color from TailwindCSS default colors
+  # Reference: https://tailwindcss.com/docs/customizing-colors
+  ascentColor = "bg-blue-100"
+
+[params.homepage.social]
+  # Global params common for both languages
+  title = "Connect with me"
+  description = "Amateur Radio: VA3RYC"
+  twitter = "https://twitter.com/rymcol"
+  linkedin = "https://linkedin.com/in/rymcol"
+  github = "https://github.com/rymcol"
+  gitlab = "https://gitlab.com/rymcol"
+  dribbble = "https://dribbble.com/rymcol"
+  youtube = "https://www.youtube.com/c/RyanCollins"
+
+[[menu.main]]
+  name = "About"
+  url = "/about"
+
+[build]
+  writeStats = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+# syntax highlight settings
+[markup]
+  [markup.highlight]
+    style = "dracula"
+  [markup.goldmark.renderer]
+    # Enable to include inline HTML
+    unsafe = true

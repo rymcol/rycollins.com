@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>http://rycollins.com/blog/</loc>
+    <lastmod>2021-07-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://rycollins.com/blog/hashing-it-out-podcast/</loc>
+    <lastmod>2021-07-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://rycollins.com/tags/privacy/</loc>
+    <lastmod>2021-07-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://rycollins.com/</loc>
+    <lastmod>2021-07-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://rycollins.com/tags/shortcodes/</loc>
+    <lastmod>2021-07-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://rycollins.com/tags/</loc>
+    <lastmod>2021-07-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://rycollins.com/page/about/</loc>
+    <lastmod>2021-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://rycollins.com/page/</loc>
+    <lastmod>2021-07-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://rycollins.com/categories/</loc>
+  </url>
+</urlset>
