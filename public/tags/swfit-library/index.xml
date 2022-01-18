@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>swfit library on Ryan Collins</title>
+    <link>https://rycollins.com/tags/swfit-library/</link>
+    <description>Recent content in swfit library on Ryan Collins</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 09 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://rycollins.com/tags/swfit-library/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Swift Cron (Scheduled &amp; Repeating Functions in Swift)</title>
+      <link>https://rycollins.com/blog/swiftcron/</link>
+      <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rycollins.com/blog/swiftcron/</guid>
+      <description>&lt;p&gt;A library I wrote to make repeating functions in Swift easier&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

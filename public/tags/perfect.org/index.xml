@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>perfect.org on Ryan Collins</title>
+    <link>https://rycollins.com/tags/perfect.org/</link>
+    <description>Recent content in perfect.org on Ryan Collins</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://rycollins.com/tags/perfect.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Updated Benchmarks for the Top Server-Side Swift Frameworks vs. Node.js</title>
+      <link>https://rycollins.com/blog/updated-perfect-benchmarks/</link>
+      <pubDate>Thu, 17 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://rycollins.com/blog/updated-perfect-benchmarks/</guid>
+      <description>&lt;p&gt;The latest update in my popular server side swift benchmarks series&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -17,5 +17,55 @@
 &lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
     </item>
     
+    <item>
+      <title>The Dialogue: Platform Engineering &amp; DevOps - Harnham x Ryan Collins</title>
+      <link>https://rycollins.com/blog/harnham-x-ryan-2/</link>
+      <pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rycollins.com/blog/harnham-x-ryan-2/</guid>
+      <description>&lt;p&gt;Watch my dialoge with Harnham on platform engineering, devops, devsecops, and the future of infrastructure&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+    </item>
+    
+    <item>
+      <title>Staying Data Secure While Working Flexibly - Harnham x Ryan Collins</title>
+      <link>https://rycollins.com/blog/harnham-x-ryan/</link>
+      <pubDate>Thu, 26 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rycollins.com/blog/harnham-x-ryan/</guid>
+      <description>&lt;p&gt;Watch my dialoge with Harnham on staying secure and working remotely&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+    </item>
+    
+    <item>
+      <title>Swift Cron (Scheduled &amp; Repeating Functions in Swift)</title>
+      <link>https://rycollins.com/blog/swiftcron/</link>
+      <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rycollins.com/blog/swiftcron/</guid>
+      <description>&lt;p&gt;A library I wrote to make repeating functions in Swift easier&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+    </item>
+    
+    <item>
+      <title>Perfect.org Redesign Concept Art</title>
+      <link>https://rycollins.com/blog/perfect-org-redesign/</link>
+      <pubDate>Fri, 14 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rycollins.com/blog/perfect-org-redesign/</guid>
+      <description>&lt;p&gt;An example graphic design project where I reworked perfect.org&amp;rsquo;s homepage&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+    </item>
+    
+    <item>
+      <title>Updated Benchmarks for the Top Server-Side Swift Frameworks vs. Node.js</title>
+      <link>https://rycollins.com/blog/updated-perfect-benchmarks/</link>
+      <pubDate>Thu, 17 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://rycollins.com/blog/updated-perfect-benchmarks/</guid>
+      <description>&lt;p&gt;The latest update in my popular server side swift benchmarks series&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+    </item>
+    
   </channel>
 </rss>
