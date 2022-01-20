@@ -4,7 +4,7 @@ title: "Swift Cron (Scheduled & Repeating Functions in Swift)"
 date: 2020-04-09
 description: "Swift Cron (Scheduled & Repeating Functions in Swift)"
 tags: ["swift", "swiftlang", "swfit library"]
-thumbnail: https://developer.apple.com/swift/images/swift-og.png
+thumbnail: /swift-og.png
 ---
 
 A library I wrote to make repeating functions in Swift easier
