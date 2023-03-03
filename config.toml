@@ -13,7 +13,7 @@ DefaultContentLanguageInSubdir = true
     [languages.en.params]
       introTitle = "Hey! I'm Ryan"
       introSubtitle = "I am an effective and highly skilled technical leader with more than 13 years experience leading and contributing to startups in cutting-edge fields"
-      introPhoto = "/ryan.jpg"
+      introPhoto = "/ryanc.jpg"
       # logo = "/blist-logo.png"
     [[languages.en.menu.main]]
         name = "Blog"
