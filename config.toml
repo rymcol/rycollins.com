@@ -12,7 +12,7 @@ DefaultContentLanguageInSubdir = true
     languageName = "English"
     [languages.en.params]
       introTitle = "Hey! I'm Ryan"
-      introSubtitle = "I am a web3/crypto infrastructure and security (DevOps/SRE) specialist who enjoys RV camping and amateur radio"
+      introSubtitle = "I am an effective and highly skilled technical leader with more than 13 years experience leading and contributing to startups in cutting-edge fields"
       introPhoto = "/ryan.jpg"
       # logo = "/blist-logo.png"
     [[languages.en.menu.main]]
@@ -85,7 +85,7 @@ DefaultContentLanguageInSubdir = true
 [params.homepage.social]
   # Global params common for both languages
   title = "Connect with me"
-  description = "Amateur Radio: VA3RYC"
+  description = "Amateur Radio: VA3RYC, KO4YVB"
   twitter = "https://twitter.com/rymcol"
   linkedin = "https://linkedin.com/in/rymcol"
   github = "https://github.com/rymcol"
