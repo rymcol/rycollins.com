@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ryan Collins — Builder, Operator, Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#d4a853;--gold-light:#e8c97a;--gold-dim:rgba(212,168,83,.25);
+  --gold-glow:rgba(212,168,83,.15);
+  --navy:#0a0e1a;--navy-light:#111730;--navy-mid:#161d36;
+  --cream:#f0e6d0;--cream-dim:rgba(240,230,208,.08);
+  --rose:#8b3a4a;--rose-light:#b5546a;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--navy);color:var(--cream);
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:18px;line-height:1.6;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ═══ STARFIELD BACKGROUND ═══ */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1px 1px at 10% 20%,rgba(212,168,83,.4),transparent),
+    radial-gradient(1px 1px at 25% 45%,rgba(212,168,83,.3),transparent),
+    radial-gradient(1.5px 1.5px at 40% 10%,rgba(212,168,83,.5),transparent),
+    radial-gradient(1px 1px at 55% 70%,rgba(212,168,83,.25),transparent),
+    radial-gradient(1px 1px at 70% 30%,rgba(212,168,83,.35),transparent),
+    radial-gradient(1.5px 1.5px at 85% 55%,rgba(212,168,83,.4),transparent),
+    radial-gradient(1px 1px at 15% 80%,rgba(212,168,83,.3),transparent),
+    radial-gradient(1px 1px at 90% 85%,rgba(212,168,83,.2),transparent),
+    radial-gradient(1px 1px at 50% 50%,rgba(212,168,83,.15),transparent),
+    radial-gradient(1.5px 1.5px at 33% 90%,rgba(212,168,83,.35),transparent),
+    radial-gradient(1px 1px at 78% 12%,rgba(212,168,83,.3),transparent),
+    radial-gradient(1px 1px at 62% 38%,rgba(212,168,83,.2),transparent);
+}
+
+/* ═══ MAIN CARD CONTAINER ═══ */
+.tarot-card{
+  position:relative;z-index:1;
+  max-width:960px;margin:40px auto;padding:0;
+  background:linear-gradient(180deg,var(--navy) 0%,var(--navy-light) 50%,var(--navy) 100%);
+  border:2px solid var(--gold);
+  border-radius:24px;
+  box-shadow:
+    0 0 80px rgba(212,168,83,.12),
+    0 0 160px rgba(212,168,83,.05),
+    inset 0 0 120px rgba(0,0,0,.5),
+    inset 0 0 40px rgba(212,168,83,.03);
+  overflow:hidden;
+}
+
+/* ═══ CARD BACK PATTERN STRIPS (top & bottom) ═══ */
+.card-back-strip{
+  height:12px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0px, transparent 8px, rgba(212,168,83,.08) 8px, rgba(212,168,83,.08) 9px),
+    repeating-linear-gradient(45deg, transparent 0px, transparent 6px, rgba(139,58,74,.06) 6px, rgba(139,58,74,.06) 7px),
+    repeating-linear-gradient(-45deg, transparent 0px, transparent 6px, rgba(139,58,74,.06) 6px, rgba(139,58,74,.06) 7px);
+  border-bottom:1px solid rgba(212,168,83,.15);
+  position:relative;
+}
+.card-back-strip.bottom{
+  border-bottom:none;
+  border-top:1px solid rgba(212,168,83,.15);
+}
+
+/* ═══ SACRED GEOMETRY BACKGROUND PATTERN ═══ */
+.card-bg-pattern{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  opacity:.025;
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--gold) 1px, transparent 1px),
+    repeating-conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(212,168,83,.5) 60deg, transparent 60deg);
+  background-size: 60px 60px, 120px 120px;
+}
+
+/* ═══ ORNATE OUTER BORDER (SVG overlay) ═══ */
+.card-border{
+  position:absolute;inset:0;pointer-events:none;z-index:10;
+}
+.card-border svg{width:100%;height:100%}
+
+/* ═══ SIDE DECORATIONS ═══ */
+.side-decor{
+  position:absolute;top:60px;bottom:60px;width:32px;pointer-events:none;z-index:5;
+  opacity:.12;
+}
+.side-decor.left{left:8px}
+.side-decor.right{right:8px}
+.side-decor svg{width:100%;height:100%}
+
+/* ═══ INNER CONTENT ═══ */
+.card-content{
+  position:relative;z-index:2;
+  padding:60px 56px 40px;
+}
+@media(max-width:640px){
+  .tarot-card{margin:16px;border-radius:16px}
+  .card-content{padding:40px 20px 24px}
+  .side-decor{display:none}
+}
+
+/* ═══ INNER GLOW ═══ */
+.inner-glow{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  box-shadow:inset 0 0 80px rgba(212,168,83,.04), inset 0 0 200px rgba(10,14,26,.6);
+  border-radius:24px;
+}
+
+/* ═══ SECTION HEADINGS ═══ */
+h1,h2,h3{font-family:'Cinzel',serif;color:var(--gold);font-weight:600;letter-spacing:.06em}
+h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,5vw,3.2rem);text-align:center;line-height:1.2}
+h2{font-size:clamp(1.2rem,3vw,1.6rem);text-align:center;margin-bottom:32px;text-transform:uppercase;letter-spacing:.15em}
+h3{font-size:1.1rem;letter-spacing:.04em}
+
+/* ═══ H2 DECORATIVE FLANKING ═══ */
+h2{position:relative;display:flex;align-items:center;justify-content:center;gap:16px}
+h2::before,h2::after{
+  content:'✦';
+  font-size:.6em;opacity:.35;
+  color:var(--gold);
+}
+
+/* ═══ NAME BANNER ═══ */
+.name-banner{
+  position:relative;text-align:center;margin-bottom:8px;padding:0 20px;
+}
+.name-banner-scroll{
+  display:inline-block;position:relative;padding:16px 60px 12px;
+}
+.name-banner-scroll::before{
+  content:'';position:absolute;inset:0;
+  border:1px solid rgba(212,168,83,.25);
+  border-radius:50% 50% 50% 50% / 20% 20% 20% 20%;
+}
+.name-banner-scroll::after{
+  content:'';position:absolute;inset:4px;
+  border:1px solid rgba(212,168,83,.12);
+  border-radius:50% 50% 50% 50% / 20% 20% 20% 20%;
+}
+.name-banner h1{position:relative;z-index:2;
+  text-shadow:0 0 40px rgba(212,168,83,.3), 0 0 80px rgba(212,168,83,.1);
+}
+
+/* ═══ MOTTO BANNER ═══ */
+.motto{
+  text-align:center;font-family:'Cinzel',serif;
+  font-size:.85rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--gold-dim);margin:8px 0 0;
+  opacity:.7;
+}
+.motto-main{
+  display:inline-block;padding:4px 24px;
+  border-top:1px solid var(--gold-dim);border-bottom:1px solid var(--gold-dim);
+  color:var(--gold);opacity:.5;font-size:.75rem;letter-spacing:.3em;
+  margin-top:12px;
+}
+
+/* ═══ PORTRAIT ═══ */
+.portrait-wrap{
+  display:flex;justify-content:center;margin:36px 0 24px;
+  position:relative;
+}
+.portrait-atmosphere{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:360px;height:360px;
+  background:radial-gradient(circle, rgba(212,168,83,.06) 0%, rgba(139,58,74,.03) 40%, transparent 70%);
+  pointer-events:none;
+  border-radius:50%;
+}
+.portrait-frame{
+  position:relative;width:260px;height:400px;
+}
+.portrait-frame img{
+  width:180px;height:240px;object-fit:cover;
+  border-radius:8px;
+  border:1.5px solid var(--gold);
+  position:absolute;top:100px;left:40px;
+  z-index:2;
+  box-shadow:0 0 30px rgba(212,168,83,.15);
+}
+.portrait-ornament{position:absolute;inset:0;z-index:1}
+.portrait-sunburst{position:absolute;inset:0;z-index:0;opacity:.08}
+
+/* ═══ CALLSIGNS ═══ */
+.callsigns{
+  text-align:center;font-family:'Cinzel',serif;
+  font-size:.95rem;letter-spacing:.2em;color:var(--gold);
+  margin:4px 0 16px;opacity:.8;
+}
+
+/* ═══ BIO ═══ */
+.bio{
+  text-align:center;max-width:640px;margin:0 auto 24px;
+  font-size:1.05rem;font-weight:300;line-height:1.7;
+  color:rgba(240,230,208,.85);
+}
+
+/* ═══ CONNECT LINKS ═══ */
+.connect{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:20px;
+  margin:20px 0 8px;
+}
+.connect a{
+  color:var(--cream);text-decoration:none;
+  font-family:'Raleway',sans-serif;font-size:.85rem;font-weight:400;letter-spacing:.04em;
+  padding:10px 24px;
+  border:1.5px solid rgba(212,168,83,.4);border-radius:8px;
+  background:linear-gradient(135deg, rgba(212,168,83,.1) 0%, rgba(212,168,83,.04) 100%);
+  transition:all .3s;
+  display:inline-flex;align-items:center;gap:6px;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+.connect a:hover{background:var(--gold);color:var(--navy);border-color:var(--gold);box-shadow:0 0 20px rgba(212,168,83,.3);transform:translateY(-1px)}
+
+/* ═══ SECTION DIVIDER ═══ */
+.divider{
+  display:flex;align-items:center;justify-content:center;
+  margin:48px auto 40px;max-width:500px;gap:12px;
+}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+.divider svg{flex-shrink:0}
+
+/* ═══ ELABORATE DIVIDER ═══ */
+.divider-elaborate{
+  display:flex;align-items:center;justify-content:center;
+  margin:48px auto 40px;max-width:600px;gap:0;position:relative;
+}
+.divider-elaborate::before,.divider-elaborate::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
+}
+.divider-elaborate .divider-center{
+  flex-shrink:0;padding:0 16px;display:flex;align-items:center;gap:8px;
+}
+
+/* ═══ EXPERIENCE / OPEN SOURCE CARDS ═══ */
+.card-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:8px;
+}
+@media(max-width:640px){.card-grid{grid-template-columns:1fr}}
+.exp-card{
+  background:rgba(212,168,83,.04);
+  border:1px solid rgba(212,168,83,.15);
+  border-radius:12px;padding:24px 28px;
+  transition:border-color .3s,background .3s;
+  position:relative;
+}
+.exp-card::before{
+  content:'';position:absolute;top:4px;right:4px;bottom:4px;left:4px;
+  border:1px solid rgba(212,168,83,.05);border-radius:8px;pointer-events:none;
+}
+.exp-card:hover{border-color:rgba(212,168,83,.4);background:rgba(212,168,83,.07)}
+.exp-card-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.exp-card-header h3{margin:0;font-size:1.05rem}
+.exp-card-meta{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.12em;color:rgba(212,168,83,.5);text-transform:uppercase}
+.exp-card-role{font-family:'Cinzel',serif;font-size:.75rem;color:var(--rose-light);letter-spacing:.08em;margin-bottom:8px}
+.exp-card p{font-size:.95rem;color:rgba(240,230,208,.7);margin-bottom:12px;line-height:1.5}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{
+  font-family:'Raleway',sans-serif;font-size:.6rem;letter-spacing:.08em;
+  padding:2px 8px;border-radius:20px;
+  background:rgba(212,168,83,.05);border:1px solid rgba(212,168,83,.12);
+  color:rgba(212,168,83,.55);text-transform:uppercase;
+}
+
+/* ═══ OPEN SOURCE ═══ */
+.oss-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.oss-card{
+  display:block;text-decoration:none;color:inherit;
+  background:rgba(212,168,83,.03);border:1px solid rgba(212,168,83,.12);
+  border-radius:12px;padding:20px 24px;transition:all .3s;
+  position:relative;
+}
+.oss-card::before{
+  content:'';position:absolute;top:4px;right:4px;bottom:4px;left:4px;
+  border:1px solid rgba(212,168,83,.04);border-radius:8px;pointer-events:none;
+}
+.oss-card:hover{border-color:rgba(212,168,83,.4);background:rgba(212,168,83,.07);transform:translateY(-2px);box-shadow:0 4px 20px rgba(212,168,83,.1)}
+.oss-card h3{font-size:.95rem;margin-bottom:4px}
+.oss-card p{font-size:.88rem;color:rgba(240,230,208,.65);margin-bottom:10px}
+.oss-lang{font-family:'Cinzel',serif;font-size:.7rem;color:var(--rose-light);letter-spacing:.1em}
+
+/* ═══ WRITING ═══ */
+.writing-list{list-style:none}
+.writing-list li{
+  padding:14px 0;border-bottom:1px solid rgba(212,168,83,.08);
+}
+.writing-list li:last-child{border-bottom:none}
+.writing-list a{
+  text-decoration:none;color:var(--cream);transition:color .3s;
+  display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px;
+}
+.writing-list a:hover{color:var(--gold)}
+.writing-type{font-family:'Cinzel',serif;font-size:.65rem;color:rgba(212,168,83,.5);letter-spacing:.1em;text-transform:uppercase}
+.writing-title{font-size:1rem;flex:1;min-width:200px}
+.writing-date{font-family:'Raleway',sans-serif;font-size:.75rem;color:rgba(240,230,208,.4)}
+
+/* ═══ HOBBIES ═══ */
+.hobbies{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:16px;
+  margin-top:8px;
+}
+.hobby{
+  font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:.1em;color:var(--gold);
+  padding:8px 20px;border:1px solid var(--gold-dim);border-radius:8px;
+  background:rgba(212,168,83,.03);
+  position:relative;
+}
+.hobby::before{
+  content:'';position:absolute;inset:3px;border:1px solid rgba(212,168,83,.06);border-radius:5px;pointer-events:none;
+}
+
+/* ═══ FOOTER CARTOUCHE ═══ */
+.footer-cartouche{
+  position:relative;text-align:center;margin-top:48px;padding:32px 40px 24px;
+}
+.footer-cartouche-border{
+  position:absolute;inset:0;pointer-events:none;
+}
+
+/* ═══ FOOTER ═══ */
+.footer{
+  text-align:center;
+  font-family:'Raleway',sans-serif;font-size:.85rem;
+  color:rgba(240,230,208,.4);letter-spacing:.04em;
+}
+
+/* ═══ ROSE CROSS DECORATIVE ═══ */
+.rose-cross-footer{
+  display:flex;justify-content:center;margin:24px 0 8px;opacity:.3;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:640px){
+  .connect{gap:10px}
+  .connect a{font-size:.7rem;padding:5px 12px}
+  .exp-card{padding:18px 20px}
+  .oss-grid{grid-template-columns:1fr}
+  .writing-list a{flex-direction:column}
+  .portrait-frame{width:210px;height:340px}
+  .portrait-frame img{width:148px;height:200px;top:85px;left:31px}
+  .portrait-atmosphere{width:260px;height:260px}
+  .name-banner-scroll{padding:12px 32px 8px}
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes shimmer{0%,100%{opacity:.3}50%{opacity:.7}}
+.shimmer{animation:shimmer 4s ease-in-out infinite}
+@keyframes slow-rotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes glow-pulse{0%,100%{filter:drop-shadow(0 0 2px rgba(212,168,83,.2))}50%{filter:drop-shadow(0 0 8px rgba(212,168,83,.4))}}
+.glow-pulse{animation:glow-pulse 5s ease-in-out infinite}
+
+/* ═══ GOLD LUMINOUS TEXT ═══ */
+.gold-luminous{
+  text-shadow:0 0 20px rgba(212,168,83,.2), 0 0 40px rgba(212,168,83,.08);
+}
+</style>
+</head>
+<body>
+
+<div class="tarot-card">
+
+  <!-- ═══ CARD BACK PATTERN STRIP (top) ═══ -->
+  <div class="card-back-strip"></div>
+
+  <!-- ═══ SACRED GEOMETRY BACKGROUND ═══ -->
+  <svg class="card-bg-pattern" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.018" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="sacred-geo" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+        <circle cx="40" cy="40" r="30" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="40" cy="40" r="18" stroke="#d4a853" stroke-width=".3" fill="none"/>
+        <circle cx="40" cy="40" r="6" stroke="#d4a853" stroke-width=".3" fill="none"/>
+        <circle cx="40" cy="10" r="18" stroke="#d4a853" stroke-width=".2" fill="none"/>
+        <circle cx="40" cy="70" r="18" stroke="#d4a853" stroke-width=".2" fill="none"/>
+        <circle cx="10" cy="40" r="18" stroke="#d4a853" stroke-width=".2" fill="none"/>
+        <circle cx="70" cy="40" r="18" stroke="#d4a853" stroke-width=".2" fill="none"/>
+        <line x1="0" y1="0" x2="80" y2="80" stroke="#d4a853" stroke-width=".15"/>
+        <line x1="80" y1="0" x2="0" y2="80" stroke="#d4a853" stroke-width=".15"/>
+        <line x1="40" y1="0" x2="40" y2="80" stroke="#d4a853" stroke-width=".15"/>
+        <line x1="0" y1="40" x2="80" y2="40" stroke="#d4a853" stroke-width=".15"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#sacred-geo)"/>
+  </svg>
+
+  <!-- ═══ INNER GLOW ═══ -->
+  <div class="inner-glow"></div>
+
+  <!-- ═══ ORNATE BORDER SYSTEM ═══ -->
+  <div class="card-border">
+    <svg viewBox="0 0 960 6000" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer border -->
+      <rect x="6" y="6" width="948" height="99.8%" rx="22" stroke="#d4a853" stroke-width="1.5" opacity=".35"/>
+      <!-- Inner border with dot pattern -->
+      <rect x="16" y="16" width="928" height="99.5%" rx="18" stroke="#d4a853" stroke-width=".5" opacity=".2"/>
+      <!-- Innermost border -->
+      <rect x="28" y="28" width="904" height="99.1%" rx="14" stroke="#d4a853" stroke-width=".3" opacity=".12"/>
+
+      <!-- ═══ TOP-LEFT CORNER MEDALLION ═══ -->
+      <g transform="translate(20,20)" opacity=".45">
+        <!-- Scrollwork -->
+        <path d="M0,50 C0,22 22,0 50,0" stroke="#d4a853" stroke-width="1.2" fill="none"/>
+        <path d="M0,60 C0,28 28,0 60,0" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M5,40 C5,18 18,5 40,5" stroke="#d4a853" stroke-width=".6" fill="none"/>
+        <!-- Art nouveau curl inner -->
+        <path d="M8,32 C10,14 24,6 36,8 C28,12 18,20 14,32 C12,38 14,42 18,40 C22,38 20,32 16,34" stroke="#d4a853" stroke-width=".7" fill="none"/>
+        <path d="M32,8 C14,10 6,24 8,36 C12,28 20,18 32,14 C38,12 42,14 40,18 C38,22 32,20 34,16" stroke="#d4a853" stroke-width=".7" fill="none"/>
+        <!-- Corner rose/star -->
+        <circle cx="14" cy="14" r="6" stroke="#d4a853" stroke-width=".8" fill="none"/>
+        <circle cx="14" cy="14" r="3" stroke="#8b3a4a" stroke-width=".7" fill="rgba(139,58,74,.2)"/>
+        <circle cx="14" cy="14" r="1.2" fill="#d4a853" opacity=".4"/>
+        <!-- Tiny decorative dots -->
+        <circle cx="30" cy="4" r="1" fill="#d4a853" opacity=".3"/>
+        <circle cx="4" cy="30" r="1" fill="#d4a853" opacity=".3"/>
+        <circle cx="42" cy="4" r=".7" fill="#d4a853" opacity=".2"/>
+        <circle cx="4" cy="42" r=".7" fill="#d4a853" opacity=".2"/>
+      </g>
+
+      <!-- ═══ TOP-RIGHT CORNER MEDALLION ═══ -->
+      <g transform="translate(940,20) scale(-1,1)" opacity=".45">
+        <path d="M0,50 C0,22 22,0 50,0" stroke="#d4a853" stroke-width="1.2" fill="none"/>
+        <path d="M0,60 C0,28 28,0 60,0" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M5,40 C5,18 18,5 40,5" stroke="#d4a853" stroke-width=".6" fill="none"/>
+        <path d="M8,32 C10,14 24,6 36,8 C28,12 18,20 14,32 C12,38 14,42 18,40 C22,38 20,32 16,34" stroke="#d4a853" stroke-width=".7" fill="none"/>
+        <path d="M32,8 C14,10 6,24 8,36 C12,28 20,18 32,14 C38,12 42,14 40,18 C38,22 32,20 34,16" stroke="#d4a853" stroke-width=".7" fill="none"/>
+        <circle cx="14" cy="14" r="6" stroke="#d4a853" stroke-width=".8" fill="none"/>
+        <circle cx="14" cy="14" r="3" stroke="#8b3a4a" stroke-width=".7" fill="rgba(139,58,74,.2)"/>
+        <circle cx="14" cy="14" r="1.2" fill="#d4a853" opacity=".4"/>
+        <circle cx="30" cy="4" r="1" fill="#d4a853" opacity=".3"/>
+        <circle cx="4" cy="30" r="1" fill="#d4a853" opacity=".3"/>
+        <circle cx="42" cy="4" r=".7" fill="#d4a853" opacity=".2"/>
+        <circle cx="4" cy="42" r=".7" fill="#d4a853" opacity=".2"/>
+      </g>
+
+      <!-- ═══ TOP BORDER REPEATING MOTIF ═══ -->
+      <g opacity=".2">
+        <line x1="80" y1="10" x2="880" y2="10" stroke="#d4a853" stroke-width=".3" stroke-dasharray="2,8"/>
+        <line x1="80" y1="22" x2="880" y2="22" stroke="#d4a853" stroke-width=".2" stroke-dasharray="1,12"/>
+      </g>
+
+      <!-- ═══ GEOMETRIC INNER BORDER PATTERN (top) ═══ -->
+      <g opacity=".15">
+        <!-- Repeating diamond motif along top -->
+        <path d="M120,18 L126,12 L132,18 L126,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M200,18 L206,12 L212,18 L206,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M280,18 L286,12 L292,18 L286,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M360,18 L366,12 L372,18 L366,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M440,18 L446,12 L452,18 L446,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <circle cx="446" cy="18" r="2" stroke="#d4a853" stroke-width=".3" fill="none"/>
+        <path d="M520,18 L526,12 L532,18 L526,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M600,18 L606,12 L612,18 L606,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M680,18 L686,12 L692,18 L686,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M760,18 L766,12 L772,18 L766,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M840,18 L846,12 L852,18 L846,24 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <!-- Center top star -->
+        <circle cx="480" cy="11" r="4" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="480" cy="11" r="1.5" fill="#d4a853" opacity=".3"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ═══ SIDE DECORATIONS (left) ═══ -->
+  <div class="side-decor left">
+    <svg viewBox="0 0 32 2000" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Pillar line -->
+      <line x1="16" y1="0" x2="16" y2="2000" stroke="#d4a853" stroke-width=".5" opacity=".3"/>
+      <line x1="20" y1="0" x2="20" y2="2000" stroke="#d4a853" stroke-width=".25" opacity=".15"/>
+      <line x1="12" y1="0" x2="12" y2="2000" stroke="#d4a853" stroke-width=".25" opacity=".15"/>
+      <!-- Vine/botanical -->
+      <path d="M16,0 Q24,50 16,100 Q8,150 16,200 Q24,250 16,300 Q8,350 16,400 Q24,450 16,500 Q8,550 16,600 Q24,650 16,700 Q8,750 16,800 Q24,850 16,900 Q8,950 16,1000 Q24,1050 16,1100 Q8,1150 16,1200 Q24,1250 16,1300 Q8,1350 16,1400 Q24,1450 16,1500 Q8,1550 16,1600 Q24,1650 16,1700 Q8,1750 16,1800 Q24,1850 16,1900 Q8,1950 16,2000" stroke="#d4a853" stroke-width=".6" opacity=".4" fill="none"/>
+      <!-- Leaves/nodes -->
+      <g opacity=".3">
+        <circle cx="16" cy="100" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="300" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="500" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="700" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="900" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1100" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1300" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1500" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1700" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1900" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <!-- Small leaf shapes -->
+        <path d="M22,150 Q16,140 16,150 Q16,140 10,150" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M22,550 Q16,540 16,550 Q16,540 10,550" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M22,950 Q16,940 16,950 Q16,940 10,950" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M22,1350 Q16,1340 16,1350 Q16,1340 10,1350" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M22,1750 Q16,1740 16,1750 Q16,1740 10,1750" stroke="#d4a853" stroke-width=".4" fill="none"/>
+      </g>
+      <!-- Repeating geometric -->
+      <g opacity=".2">
+        <path d="M10,200 L16,192 L22,200 L16,208 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,400 L16,392 L22,400 L16,408 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,600 L16,592 L22,600 L16,608 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,800 L16,792 L22,800 L16,808 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1000 L16,992 L22,1000 L16,1008 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1200 L16,1192 L22,1200 L16,1208 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1400 L16,1392 L22,1400 L16,1408 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1600 L16,1592 L22,1600 L16,1608 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1800 L16,1792 L22,1800 L16,1808 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ═══ SIDE DECORATIONS (right) ═══ -->
+  <div class="side-decor right">
+    <svg viewBox="0 0 32 2000" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="16" y1="0" x2="16" y2="2000" stroke="#d4a853" stroke-width=".5" opacity=".3"/>
+      <line x1="20" y1="0" x2="20" y2="2000" stroke="#d4a853" stroke-width=".25" opacity=".15"/>
+      <line x1="12" y1="0" x2="12" y2="2000" stroke="#d4a853" stroke-width=".25" opacity=".15"/>
+      <path d="M16,0 Q8,50 16,100 Q24,150 16,200 Q8,250 16,300 Q24,350 16,400 Q8,450 16,500 Q24,550 16,600 Q8,650 16,700 Q24,750 16,800 Q8,850 16,900 Q24,950 16,1000 Q8,1050 16,1100 Q24,1150 16,1200 Q8,1250 16,1300 Q24,1350 16,1400 Q8,1450 16,1500 Q24,1550 16,1600 Q8,1650 16,1700 Q24,1750 16,1800 Q8,1850 16,1900 Q24,1950 16,2000" stroke="#d4a853" stroke-width=".6" opacity=".4" fill="none"/>
+      <g opacity=".3">
+        <circle cx="16" cy="100" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="300" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="500" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="700" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="900" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1100" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1300" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1500" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1700" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <circle cx="16" cy="1900" r="2.5" stroke="#d4a853" stroke-width=".5" fill="none"/>
+        <path d="M10,150 Q16,140 16,150 Q16,140 22,150" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,550 Q16,540 16,550 Q16,540 22,550" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,950 Q16,940 16,950 Q16,940 22,950" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1350 Q16,1340 16,1350 Q16,1340 22,1350" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1750 Q16,1740 16,1750 Q16,1740 22,1750" stroke="#d4a853" stroke-width=".4" fill="none"/>
+      </g>
+      <g opacity=".2">
+        <path d="M10,200 L16,192 L22,200 L16,208 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,400 L16,392 L22,400 L16,408 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,600 L16,592 L22,600 L16,608 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,800 L16,792 L22,800 L16,808 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1000 L16,992 L22,1000 L16,1008 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1200 L16,1192 L22,1200 L16,1208 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1400 L16,1392 L22,1400 L16,1408 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1600 L16,1592 L22,1600 L16,1608 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+        <path d="M10,1800 L16,1792 L22,1800 L16,1808 Z" stroke="#d4a853" stroke-width=".4" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="card-content">
+
+    <!-- ═══ TOP ORNAMENT: Seven-pointed star with radiating geometry ═══ -->
+    <div style="text-align:center;margin-bottom:8px">
+      <svg width="72" height="72" viewBox="0 0 72 72" fill="none" class="glow-pulse">
+        <!-- Outer circle -->
+        <circle cx="36" cy="36" r="34" stroke="#d4a853" stroke-width=".4" opacity=".2"/>
+        <circle cx="36" cy="36" r="28" stroke="#d4a853" stroke-width=".3" opacity=".15"/>
+        <!-- Seven-pointed star -->
+        <polygon points="36,4 40,24 56,14 46,30 64,36 46,40 56,56 40,48 36,68 32,48 16,56 26,40 8,36 26,30 16,14 32,24" stroke="#d4a853" stroke-width=".8" fill="none" opacity=".5"/>
+        <!-- Inner details -->
+        <circle cx="36" cy="36" r="8" stroke="#d4a853" stroke-width=".5" fill="none" opacity=".3"/>
+        <circle cx="36" cy="36" r="3" stroke="#8b3a4a" stroke-width=".6" fill="rgba(139,58,74,.2)" opacity=".5"/>
+        <!-- Small radiating lines -->
+        <line x1="36" y1="8" x2="36" y2="14" stroke="#d4a853" stroke-width=".3" opacity=".2"/>
+        <line x1="36" y1="58" x2="36" y2="64" stroke="#d4a853" stroke-width=".3" opacity=".2"/>
+        <line x1="8" y1="36" x2="14" y2="36" stroke="#d4a853" stroke-width=".3" opacity=".2"/>
+        <line x1="58" y1="36" x2="64" y2="36" stroke="#d4a853" stroke-width=".3" opacity=".2"/>
+      </svg>
+    </div>
+
+    <!-- ═══ NAME BANNER ═══ -->
+    <div class="name-banner">
+      <div class="name-banner-scroll">
+        <!-- Scroll end caps -->
+        <svg style="position:absolute;left:-12px;top:50%;transform:translateY(-50%)" width="20" height="40" viewBox="0 0 20 40" fill="none">
+          <path d="M18,4 C8,4 4,10 4,20 C4,30 8,36 18,36" stroke="#d4a853" stroke-width=".8" fill="none" opacity=".3"/>
+          <path d="M16,8 C10,8 8,14 8,20 C8,26 10,32 16,32" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".2"/>
+          <circle cx="6" cy="4" r="2" stroke="#d4a853" stroke-width=".5" fill="none" opacity=".2"/>
+          <circle cx="6" cy="36" r="2" stroke="#d4a853" stroke-width=".5" fill="none" opacity=".2"/>
+        </svg>
+        <svg style="position:absolute;right:-12px;top:50%;transform:translateY(-50%) scaleX(-1)" width="20" height="40" viewBox="0 0 20 40" fill="none">
+          <path d="M18,4 C8,4 4,10 4,20 C4,30 8,36 18,36" stroke="#d4a853" stroke-width=".8" fill="none" opacity=".3"/>
+          <path d="M16,8 C10,8 8,14 8,20 C8,26 10,32 16,32" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".2"/>
+          <circle cx="6" cy="4" r="2" stroke="#d4a853" stroke-width=".5" fill="none" opacity=".2"/>
+          <circle cx="6" cy="36" r="2" stroke="#d4a853" stroke-width=".5" fill="none" opacity=".2"/>
+        </svg>
+        <h1 class="gold-luminous">Ryan Collins</h1>
+      </div>
+    </div>
+
+    <!-- Portrait — The Hermit -->
+    <div class="portrait-wrap">
+      <div class="portrait-atmosphere"></div>
+      <div class="portrait-frame">
+        <svg class="portrait-ornament" viewBox="0 0 260 400" fill="none">
+
+          <!-- === LANTERN above portrait === -->
+          <!-- Staff/pole -->
+          <line x1="130" y1="0" x2="130" y2="88" stroke="#d4a853" stroke-width="1" opacity=".4"/>
+          <!-- Lantern body -->
+          <path d="M118,18 L118,50 Q118,58 130,58 Q142,58 142,50 L142,18 Q142,12 130,12 Q118,12 118,18 Z" stroke="#d4a853" stroke-width="1" fill="none" opacity=".4"/>
+          <!-- Lantern cap -->
+          <path d="M114,14 L146,14" stroke="#d4a853" stroke-width=".8" opacity=".35"/>
+          <path d="M120,10 L140,10" stroke="#d4a853" stroke-width=".6" opacity=".3"/>
+          <line x1="130" y1="10" x2="130" y2="4" stroke="#d4a853" stroke-width=".6" opacity=".3"/>
+          <!-- Six-pointed star (Star of David) inside lantern — The Hermit's light -->
+          <polygon points="130,22 134,30 126,30" stroke="#d4a853" stroke-width=".7" fill="rgba(212,168,83,.15)" opacity=".6"/>
+          <polygon points="130,38 126,30 134,30" stroke="#d4a853" stroke-width=".7" fill="rgba(212,168,83,.15)" opacity=".6"/>
+          <!-- Lantern glow -->
+          <circle cx="130" cy="30" r="12" fill="rgba(212,168,83,.04)"/>
+          <circle cx="130" cy="30" r="20" fill="rgba(212,168,83,.02)"/>
+          <!-- Lantern light rays -->
+          <line x1="130" y1="30" x2="100" y2="20" stroke="#d4a853" stroke-width=".2" opacity=".15"/>
+          <line x1="130" y1="30" x2="160" y2="20" stroke="#d4a853" stroke-width=".2" opacity=".15"/>
+          <line x1="130" y1="30" x2="100" y2="40" stroke="#d4a853" stroke-width=".2" opacity=".15"/>
+          <line x1="130" y1="30" x2="160" y2="40" stroke="#d4a853" stroke-width=".2" opacity=".15"/>
+          <line x1="130" y1="30" x2="96" y2="30" stroke="#d4a853" stroke-width=".2" opacity=".12"/>
+          <line x1="130" y1="30" x2="164" y2="30" stroke="#d4a853" stroke-width=".2" opacity=".12"/>
+
+          <!-- === SIMPLE RECTANGULAR FRAME around portrait === -->
+          <rect x="34" y="94" rx="4" ry="4" width="192" height="252" stroke="#d4a853" stroke-width="1.2" fill="none" opacity=".35"/>
+          <rect x="28" y="88" rx="6" ry="6" width="204" height="264" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".18"/>
+          <!-- Corner dots on frame -->
+          <circle cx="34" cy="94" r="2" fill="#d4a853" opacity=".25"/>
+          <circle cx="226" cy="94" r="2" fill="#d4a853" opacity=".25"/>
+          <circle cx="34" cy="346" r="2" fill="#d4a853" opacity=".25"/>
+          <circle cx="226" cy="346" r="2" fill="#d4a853" opacity=".25"/>
+
+          <!-- === MOUNTAIN PATH below portrait === -->
+          <!-- Mountain silhouette -->
+          <path d="M30,380 L80,355 L110,370 L130,350 L155,365 L180,352 L230,380" stroke="#d4a853" stroke-width=".6" fill="none" opacity=".2"/>
+          <path d="M50,385 L90,370 L130,358 L170,368 L210,385" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".12"/>
+          <!-- Winding path -->
+          <path d="M130,346 Q125,355 128,365 Q132,375 127,385 Q122,395 130,400" stroke="#d4a853" stroke-width=".5" fill="none" opacity=".2" stroke-dasharray="3 3"/>
+
+          <!-- Staff line on left side -->
+          <line x1="24" y1="70" x2="24" y2="390" stroke="#d4a853" stroke-width=".6" opacity=".12"/>
+          <!-- Staff knob -->
+          <circle cx="24" cy="68" r="3" stroke="#d4a853" stroke-width=".5" fill="none" opacity=".15"/>
+
+        </svg>
+        <img src="ryan.jpg" alt="Ryan Collins" />
+      </div>
+    </div>
+
+    <p class="bio">Technical leader &amp; entrepreneur with 20 years building at the intersection of systems, craft, and curiosity. Currently building next-gen Ethereum infrastructure at <strong>init4</strong>. When I'm not writing code, you'll find me on the air as a ham radio operator, tinkering with electronics, or working with my hands.</p>
+
+    <!-- Connect links -->
+    <div class="connect">
+      <a href="https://x.com/rymcol" target="_blank">𝕏 @rymcol</a>
+      <a href="https://linkedin.com/in/rymcol" target="_blank">LinkedIn</a>
+      <a href="https://github.com/rymcol" target="_blank">GitHub</a>
+      <a href="https://dribbble.com/rymcol" target="_blank">Dribbble</a>
+      <a href="https://youtube.com/c/RyanCollins" target="_blank">YouTube</a>
+    </div>
+
+    <!-- ═══ DIVIDER: Celestial (elaborated) ═══ -->
+    <div class="divider-elaborate">
+      <div class="divider-center">
+        <svg width="120" height="36" viewBox="0 0 120 36" fill="none">
+          <!-- Extended decorative line -->
+          <line x1="0" y1="18" x2="36" y2="18" stroke="#d4a853" stroke-width=".5" opacity=".25"/>
+          <line x1="84" y1="18" x2="120" y2="18" stroke="#d4a853" stroke-width=".5" opacity=".25"/>
+          <!-- Outer geometric frame -->
+          <path d="M36,6 L44,2 L76,2 L84,6 L84,30 L76,34 L44,34 L36,30 Z" stroke="#d4a853" stroke-width=".5" opacity=".2" fill="none"/>
+          <!-- Central sun -->
+          <circle cx="60" cy="18" r="8" stroke="#d4a853" stroke-width=".8" opacity=".4"/>
+          <circle cx="60" cy="18" r="4" stroke="#d4a853" stroke-width=".5" opacity=".3"/>
+          <circle cx="60" cy="18" r="2" fill="#d4a853" opacity=".3"/>
+          <!-- Rays -->
+          <line x1="60" y1="6" x2="60" y2="2" stroke="#d4a853" stroke-width=".4" opacity=".25"/>
+          <line x1="60" y1="30" x2="60" y2="34" stroke="#d4a853" stroke-width=".4" opacity=".25"/>
+          <line x1="48" y1="18" x2="38" y2="18" stroke="#d4a853" stroke-width=".4" opacity=".25"/>
+          <line x1="72" y1="18" x2="82" y2="18" stroke="#d4a853" stroke-width=".4" opacity=".25"/>
+          <!-- Crescent moons -->
+          <path d="M24,15 A4,4 0 1,1 24,21 A3,3 0 1,0 24,15" fill="#d4a853" opacity=".2"/>
+          <path d="M96,15 A4,4 0 1,0 96,21 A3,3 0 1,1 96,15" fill="#d4a853" opacity=".2"/>
+          <!-- Dots -->
+          <circle cx="14" cy="18" r="1.5" fill="#d4a853" opacity=".2"/>
+          <circle cx="106" cy="18" r="1.5" fill="#d4a853" opacity=".2"/>
+          <circle cx="6" cy="18" r=".8" fill="#d4a853" opacity=".15"/>
+          <circle cx="114" cy="18" r=".8" fill="#d4a853" opacity=".15"/>
+          <!-- Diamond accents -->
+          <path d="M32,18 L34,16 L36,18 L34,20 Z" fill="#d4a853" opacity=".2"/>
+          <path d="M84,18 L86,16 L88,18 L86,20 Z" fill="#d4a853" opacity=".2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ═══ EXPERIENCE ═══ -->
+    <h2 class="gold-luminous">Experience</h2>
+    <div class="card-grid">
+
+      <div class="exp-card">
+        <div class="exp-card-header">
+          <h3>init4 — Signet</h3>
+          <span class="exp-card-meta">Current</span>
+        </div>
+        <div class="exp-card-role">Technical Leadership</div>
+        <p>Research collective building next-gen Ethereum infrastructure — rollup sequencing, block building, and the Signet network.</p>
+        <div class="tags"><span class="tag">Rust</span><span class="tag">Solidity</span><span class="tag">Ethereum</span><span class="tag">Rollups</span><span class="tag">TypeScript</span></div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-card-header">
+          <h3>SuperRare</h3>
+          <span class="exp-card-meta">Previous</span>
+        </div>
+        <div class="exp-card-role">Engineering Leadership</div>
+        <p>Led engineering for one of the premier NFT art marketplaces. Built Rare Protocol smart contracts and platform infrastructure.</p>
+        <div class="tags"><span class="tag">Solidity</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Smart Contracts</span><span class="tag">AWS</span></div>
+      </div>
+
+    </div>
+
+    <!-- ═══ DIVIDER: Celestial ═══ -->
+    <div class="divider-elaborate">
+      <div class="divider-center">
+        <svg width="80" height="24" viewBox="0 0 80 24" fill="none">
+          <circle cx="40" cy="12" r="6" stroke="#d4a853" stroke-width=".8" opacity=".4"/>
+          <circle cx="40" cy="12" r="2" fill="#d4a853" opacity=".3"/>
+          <line x1="8" y1="12" x2="32" y2="12" stroke="#d4a853" stroke-width=".5" opacity=".3"/>
+          <line x1="48" y1="12" x2="72" y2="12" stroke="#d4a853" stroke-width=".5" opacity=".3"/>
+          <circle cx="12" cy="12" r="1.5" fill="#d4a853" opacity=".2"/>
+          <circle cx="68" cy="12" r="1.5" fill="#d4a853" opacity=".2"/>
+          <path d="M20,10 A3,3 0 1,1 20,14 A2,2 0 1,0 20,10" fill="#d4a853" opacity=".2"/>
+          <path d="M60,10 A3,3 0 1,0 60,14 A2,2 0 1,1 60,10" fill="#d4a853" opacity=".2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ═══ VOLUNTEERING ═══ -->
+    <h2 class="gold-luminous">Volunteering</h2>
+    <p style="font-size:1.05rem;color:rgba(240,230,208,.75);max-width:640px;margin:0 auto 16px;text-align:center;line-height:1.7;">
+      A history of giving back — from emergency medical response and Waldorf education to community building and beyond.
+    </p>
+
+    <!-- ═══ DIVIDER: Rose Cross (elaborated) ═══ -->
+    <div class="divider-elaborate">
+      <div class="divider-center">
+        <svg width="100" height="52" viewBox="0 0 100 52" fill="none">
+          <line x1="0" y1="26" x2="24" y2="26" stroke="#d4a853" stroke-width=".4" opacity=".25"/>
+          <line x1="76" y1="26" x2="100" y2="26" stroke="#d4a853" stroke-width=".4" opacity=".25"/>
+          <!-- Outer frame -->
+          <circle cx="50" cy="26" r="22" stroke="#d4a853" stroke-width=".3" opacity=".15" fill="none"/>
+          <!-- Cross -->
+          <line x1="50" y1="6" x2="50" y2="46" stroke="#d4a853" stroke-width="1" opacity=".35"/>
+          <line x1="30" y1="26" x2="70" y2="26" stroke="#d4a853" stroke-width="1" opacity=".35"/>
+          <!-- Cross terminals -->
+          <line x1="48" y1="6" x2="52" y2="6" stroke="#d4a853" stroke-width=".6" opacity=".25"/>
+          <line x1="48" y1="46" x2="52" y2="46" stroke="#d4a853" stroke-width=".6" opacity=".25"/>
+          <line x1="30" y1="24" x2="30" y2="28" stroke="#d4a853" stroke-width=".6" opacity=".25"/>
+          <line x1="70" y1="24" x2="70" y2="28" stroke="#d4a853" stroke-width=".6" opacity=".25"/>
+          <!-- Rose at center -->
+          <circle cx="50" cy="26" r="7" stroke="#8b3a4a" stroke-width="1" fill="none" opacity=".4"/>
+          <circle cx="50" cy="26" r="4" stroke="#8b3a4a" stroke-width=".7" fill="rgba(139,58,74,.2)" opacity=".5"/>
+          <circle cx="50" cy="26" r="1.5" fill="#8b3a4a" opacity=".45"/>
+          <!-- Petals -->
+          <ellipse cx="50" cy="18" rx="2.5" ry="4" stroke="#8b3a4a" stroke-width=".5" fill="none" opacity=".25"/>
+          <ellipse cx="50" cy="34" rx="2.5" ry="4" stroke="#8b3a4a" stroke-width=".5" fill="none" opacity=".25"/>
+          <ellipse cx="42" cy="26" rx="4" ry="2.5" stroke="#8b3a4a" stroke-width=".5" fill="none" opacity=".25"/>
+          <ellipse cx="58" cy="26" rx="4" ry="2.5" stroke="#8b3a4a" stroke-width=".5" fill="none" opacity=".25"/>
+          <!-- Diagonal petals -->
+          <ellipse cx="44" cy="20" rx="2" ry="3" transform="rotate(-45 44 20)" stroke="#8b3a4a" stroke-width=".3" fill="none" opacity=".15"/>
+          <ellipse cx="56" cy="20" rx="2" ry="3" transform="rotate(45 56 20)" stroke="#8b3a4a" stroke-width=".3" fill="none" opacity=".15"/>
+          <ellipse cx="44" cy="32" rx="2" ry="3" transform="rotate(45 44 32)" stroke="#8b3a4a" stroke-width=".3" fill="none" opacity=".15"/>
+          <ellipse cx="56" cy="32" rx="2" ry="3" transform="rotate(-45 56 32)" stroke="#8b3a4a" stroke-width=".3" fill="none" opacity=".15"/>
+          <!-- Corner dots -->
+          <circle cx="24" cy="26" r="1.2" fill="#d4a853" opacity=".2"/>
+          <circle cx="76" cy="26" r="1.2" fill="#d4a853" opacity=".2"/>
+          <path d="M18,26 L20,24 L22,26 L20,28 Z" fill="#d4a853" opacity=".15"/>
+          <path d="M78,26 L80,24 L82,26 L80,28 Z" fill="#d4a853" opacity=".15"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ═══ OPEN SOURCE ═══ -->
+    <h2 class="gold-luminous">Open Source</h2>
+    <div class="oss-grid">
+      <a class="oss-card" href="https://github.com/init4tech/signet-sdk" target="_blank">
+        <h3>Signet SDK</h3>
+        <p>Ecosystem crates for the Signet network</p>
+        <span class="oss-lang">Rust</span>
+      </a>
+      <a class="oss-card" href="https://github.com/rareprotocol/core" target="_blank">
+        <h3>Rare Protocol</h3>
+        <p>Core smart contracts powering the SuperRare NFT marketplace</p>
+        <span class="oss-lang">Solidity</span>
+      </a>
+      <a class="oss-card" href="https://github.com/rymcol/SwiftCron" target="_blank">
+        <h3>SwiftCron</h3>
+        <p>Scheduled &amp; repeating functions made easy in Swift for macOS and Linux</p>
+        <span class="oss-lang">Swift</span>
+      </a>
+      <a class="oss-card" href="https://github.com/rymcol/Server-Side-Swift-Benchmarking" target="_blank">
+        <h3>Server-Side Swift Benchmarking</h3>
+        <p>Benchmarking server-side Swift frameworks against Node.js</p>
+        <span class="oss-lang">Swift</span>
+      </a>
+    </div>
+
+    <!-- ═══ DIVIDER: Sacred Geometry (elaborated) ═══ -->
+    <div class="divider-elaborate">
+      <div class="divider-center">
+        <svg width="100" height="48" viewBox="0 0 100 48" fill="none">
+          <line x1="0" y1="24" x2="18" y2="24" stroke="#d4a853" stroke-width=".4" opacity=".25"/>
+          <line x1="82" y1="24" x2="100" y2="24" stroke="#d4a853" stroke-width=".4" opacity=".25"/>
+          <!-- Pelican in her piety (stylized) -->
+          <ellipse cx="50" cy="28" rx="14" ry="12" stroke="#d4a853" stroke-width=".7" fill="none" opacity=".25"/>
+          <ellipse cx="50" cy="28" rx="10" ry="8" stroke="#d4a853" stroke-width=".3" fill="none" opacity=".12"/>
+          <path d="M50,16 Q45,20 42,26" stroke="#d4a853" stroke-width=".7" fill="none" opacity=".3"/>
+          <path d="M50,16 Q55,20 58,26" stroke="#d4a853" stroke-width=".7" fill="none" opacity=".3"/>
+          <path d="M50,10 L50,16" stroke="#d4a853" stroke-width=".7" opacity=".3"/>
+          <circle cx="50" cy="8" r="4" stroke="#d4a853" stroke-width=".7" fill="none" opacity=".3"/>
+          <circle cx="50" cy="8" r="1.5" fill="#d4a853" opacity=".15"/>
+          <!-- Drops -->
+          <circle cx="47" cy="24" r="1" fill="#8b3a4a" opacity=".35"/>
+          <circle cx="53" cy="24" r="1" fill="#8b3a4a" opacity=".35"/>
+          <circle cx="50" cy="22" r="1" fill="#8b3a4a" opacity=".35"/>
+          <!-- Flanking elements -->
+          <circle cx="22" cy="24" r="1.2" fill="#d4a853" opacity=".2"/>
+          <circle cx="78" cy="24" r="1.2" fill="#d4a853" opacity=".2"/>
+          <path d="M26,24 L28,22 L30,24 L28,26 Z" fill="#d4a853" opacity=".15"/>
+          <path d="M70,24 L72,22 L74,24 L72,26 Z" fill="#d4a853" opacity=".15"/>
+          <!-- Radiating arcs -->
+          <path d="M34,14 Q50,4 66,14" stroke="#d4a853" stroke-width=".3" fill="none" opacity=".12"/>
+          <path d="M34,38 Q50,46 66,38" stroke="#d4a853" stroke-width=".3" fill="none" opacity=".12"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ═══ WRITING & TALKS ═══ -->
+    <h2 class="gold-luminous">Writing &amp; Talks</h2>
+    <ul class="writing-list">
+      <li><a href="https://rycollins.com/blog/acria-podcast/" target="_blank">
+        <span class="writing-type">Panel Discussion</span>
+        <span class="writing-title">SuperRare at ACRIA Podcast</span>
+        <span class="writing-date">Oct 2021</span>
+      </a></li>
+      <li><a href="https://rycollins.com/blog/hashing-it-out-podcast/" target="_blank">
+        <span class="writing-type">Interview</span>
+        <span class="writing-title">Hashing It Out #106</span>
+        <span class="writing-date">Jul 2021</span>
+      </a></li>
+      <li><a href="https://rycollins.com/blog/harnham-x-ryan-2/" target="_blank">
+        <span class="writing-type">Discussion</span>
+        <span class="writing-title">The Dialogue: Platform Engineering &amp; DevOps</span>
+        <span class="writing-date">Dec 2020</span>
+      </a></li>
+      <li><a href="https://rycollins.com/blog/harnham-x-ryan/" target="_blank">
+        <span class="writing-type">Discussion</span>
+        <span class="writing-title">Staying Data Secure While Working Flexibly</span>
+        <span class="writing-date">Nov 2020</span>
+      </a></li>
+      <li><a href="https://rycollins.com/blog/swiftcron/" target="_blank">
+        <span class="writing-type">Article</span>
+        <span class="writing-title">Swift Cron</span>
+        <span class="writing-date">Apr 2020</span>
+      </a></li>
+    </ul>
+
+    <!-- ═══ DIVIDER: Star (elaborated) ═══ -->
+    <!-- ═══ FOOTER CARTOUCHE ═══ -->
+    <div class="footer-cartouche">
+      <svg class="footer-cartouche-border" viewBox="0 0 800 160" preserveAspectRatio="none" fill="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+        <!-- Cartouche shape -->
+        <path d="M100,10 Q120,2 400,2 Q680,2 700,10 L720,30 Q730,80 720,130 L700,150 Q680,158 400,158 Q120,158 100,150 L80,130 Q70,80 80,30 Z" stroke="#d4a853" stroke-width=".8" fill="none" opacity=".12"/>
+        <path d="M120,16 Q140,10 400,10 Q660,10 680,16 L696,32 Q704,80 696,128 L680,144 Q660,150 400,150 Q140,150 120,144 L104,128 Q96,80 104,32 Z" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".08"/>
+        <!-- Corner flourishes -->
+        <circle cx="90" cy="20" r="3" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".12"/>
+        <circle cx="710" cy="20" r="3" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".12"/>
+        <circle cx="90" cy="140" r="3" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".12"/>
+        <circle cx="710" cy="140" r="3" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".12"/>
+      </svg>
+
+      <!-- Rose Cross -->
+      <div class="rose-cross-footer">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="#d4a853" stroke-width=".3" opacity=".12" fill="none"/>
+          <line x1="20" y1="3" x2="20" y2="37" stroke="#d4a853" stroke-width=".7"/>
+          <line x1="3" y1="20" x2="37" y2="20" stroke="#d4a853" stroke-width=".7"/>
+          <!-- Cross terminals -->
+          <line x1="18" y1="3" x2="22" y2="3" stroke="#d4a853" stroke-width=".4" opacity=".3"/>
+          <line x1="18" y1="37" x2="22" y2="37" stroke="#d4a853" stroke-width=".4" opacity=".3"/>
+          <line x1="3" y1="18" x2="3" y2="22" stroke="#d4a853" stroke-width=".4" opacity=".3"/>
+          <line x1="37" y1="18" x2="37" y2="22" stroke="#d4a853" stroke-width=".4" opacity=".3"/>
+          <circle cx="20" cy="20" r="5" stroke="#8b3a4a" stroke-width=".8" fill="none"/>
+          <circle cx="20" cy="20" r="2.5" stroke="#8b3a4a" stroke-width=".5" fill="rgba(139,58,74,.2)"/>
+          <circle cx="20" cy="20" r="1" fill="#8b3a4a" opacity=".45"/>
+        </svg>
+      </div>
+      <div class="footer">
+        <div class="callsigns" style="margin-bottom:8px;">VA3RYC · KO4YVB</div>
+        <div class="motto" style="margin-bottom:12px;"><span class="motto-main">DAT ROSA MEL APIBUS</span></div>
+        Built with care in Ontario, Canada 🍁
+      </div>
+    </div>
+
+    <!-- Bottom star -->
+    <div style="text-align:center;margin-top:24px">
+      <svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="shimmer">
+        <circle cx="24" cy="24" r="20" stroke="#d4a853" stroke-width=".3" opacity=".12" fill="none"/>
+        <polygon points="24,2 27.5,17 42,10 32,22 46,26 32,28 42,40 27.5,33 24,48 20.5,33 6,40 16,28 2,26 16,22 6,10 20.5,17" stroke="#d4a853" stroke-width=".7" fill="none" opacity=".3"/>
+        <circle cx="24" cy="24" r="5" stroke="#d4a853" stroke-width=".4" fill="none" opacity=".2"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- ═══ CARD BACK PATTERN STRIP (bottom) ═══ -->
+  <div class="card-back-strip bottom"></div>
+
+</div>
+
+</body>
+</html>
