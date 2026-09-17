@@ -14,4 +14,3 @@ Watch my dialoge with Harnham on staying secure and working remotely
 ## Staying Data Secure While Working Flexibly - Harnham x Ryan Collins
 
 https://www.linkedin.com/video/live/urn:li:ugcPost:6737741888033439744/
-
