@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ryan Collins · Indie apps, made with care</title>
+<meta name="description" content="Ryan Collins is an indie developer in Ontario, Canada, making carefully built apps: xcv, a clipboard manager that lives in the Mac's notch; Percolate, which keeps your Mac awake; and Astrolical, a cosmic calendar companion.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f0e8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#11100e" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://rycollins.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rycollins.com/">
+<meta property="og:title" content="Ryan Collins · Indie apps, made with care">
+<meta property="og:description" content="xcv puts your clipboard history in the notch. Percolate keeps your Mac awake, one sip at a time. Astrolical is your cosmic calendar companion.">
+<meta property="og:image" content="https://rycollins.com/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@rymcol">
+<link rel="preload" href="/assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/instrument-serif.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/instrument-serif-italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+
+:root {
+  --bg: #f4f0e8;
+  --bg-2: #ebe5da;
+  --surface: #fbf9f5;
+  --ink: #1b1a17;
+  --ink-2: #4a463f;
+  --muted: #736d63;
+  --line: rgba(27, 26, 23, .12);
+  --line-strong: rgba(27, 26, 23, .2);
+  --sage: #4f6857;
+  --coffee: #8f5d38;
+  --gold: #8a6d25;
+  --focus: #2f6fdc;
+  --shadow: 0 1px 1px rgba(40, 30, 10, .04), 0 12px 32px -12px rgba(40, 30, 10, .18);
+  --serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --rounded: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --wrap: 1120px;
+  --gutter: clamp(16px, 4vw, 40px);
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #11100e;
+    --bg-2: #191815;
+    --surface: #1a1916;
+    --ink: #f2eee7;
+    --ink-2: #cfc9bf;
+    --muted: #9d968b;
+    --line: rgba(242, 238, 231, .1);
+    --line-strong: rgba(242, 238, 231, .18);
+    --sage: #9fbaa6;
+    --coffee: #d9a878;
+    --gold: #e2c47a;
+    --focus: #7aa7ff;
+    --shadow: 0 1px 1px rgba(0, 0, 0, .3), 0 18px 40px -16px rgba(0, 0, 0, .7);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 17px/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+img, video, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+kbd { font-family: var(--rounded); }
+
+.skip {
+  position: absolute; left: 50%; top: -60px; translate: -50% 0; z-index: 100;
+  background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; text-decoration: none;
+}
+.skip:focus { top: 56px; }
+
+.wrap { width: min(100% - 2 * var(--gutter), var(--wrap)); margin-inline: auto; }
+
+/* ─── The notch ────────────────────────────────────────────── */
+.island {
+  position: fixed; top: 0; left: 50%; translate: -50% 0; z-index: 50;
+  height: 40px;
+  color: #f5f3ef;
+  font: 500 14px/1 var(--sans);
+  letter-spacing: -.005em;
+}
+.island-bg {
+  position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+  background: #000;
+  border-radius: 0 0 18px 18px;
+  animation: island-open .85s cubic-bezier(.3, 1.4, .5, 1) .25s both;
+}
+.island-bg::before, .island-bg::after {
+  content: ""; position: absolute; top: 0; width: 9px; height: 9px;
+}
+.island-bg::before { left: -9px; background: radial-gradient(circle at 0 100%, transparent 8.5px, #000 9px); }
+.island-bg::after { right: -9px; background: radial-gradient(circle at 100% 100%, transparent 8.5px, #000 9px); }
+@media (prefers-color-scheme: dark) {
+  .island-bg { box-shadow: 0 0 0 1px rgba(255, 255, 255, .07); }
+}
+@keyframes island-open {
+  from { left: calc(50% - 62px); right: calc(50% - 62px); bottom: 6px; }
+  to { left: 0; right: 0; bottom: 0; }
+}
+.island nav {
+  position: relative; height: 100%;
+  display: flex; align-items: center; gap: 2px;
+  padding: 0 8px 0 7px;
+  animation: fade-in .4s ease-out .6s both;
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.island a {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 30px; padding: 0 11px; border-radius: 999px;
+  text-decoration: none; color: rgba(245, 243, 239, .78);
+  transition: background-color .2s, color .2s;
+  white-space: nowrap;
+}
+.island a:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+.island .island-home { color: #fff; padding-left: 4px; font-weight: 600; }
+.island-home img { width: 24px; height: 24px; border-radius: 50%; }
+.island-cam {
+  width: 96px; flex: none; display: grid; place-items: center;
+}
+.island-cam::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2b3550 0, #0d1020 55%, #050608 100%);
+  box-shadow: 0 0 0 1.5px #111;
+}
+@media (max-width: 560px) {
+  .island { font-size: 13.5px; }
+  .island-cam { width: 40px; }
+  .island .hide-sm { display: none; }
+  .island a { padding: 0 9px; }
+}
+
+/* ─── Hero ─────────────────────────────────────────────────── */
+.hero {
+  padding: clamp(120px, 20vh, 190px) 0 clamp(64px, 10vw, 112px);
+  text-align: center;
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 500 14px/1 var(--sans); color: var(--muted);
+  letter-spacing: .01em;
+}
+.eyebrow::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--coffee);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--coffee) 18%, transparent);
+}
+.hero h1 {
+  margin-top: 26px;
+  font: 400 clamp(3.1rem, 9.2vw, 7.4rem)/.94 var(--serif);
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(100deg, var(--coffee) 10%, var(--sage) 90%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  padding-right: .06em;
+}
+.lead {
+  max-width: 39em; margin: 30px auto 0;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem); line-height: 1.6; color: var(--ink-2);
+  text-wrap: pretty;
+}
+.hero-apps {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;
+  margin-top: 40px;
+}
+.app-chip {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 18px 8px 8px; border-radius: 18px;
+  background: var(--surface); border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  text-decoration: none; text-align: left;
+  transition: transform .25s cubic-bezier(.3, 1.4, .5, 1), border-color .2s;
+}
+.app-chip:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+.app-chip img { width: 48px; height: 48px; }
+@media (max-width: 560px) {
+  .hero-apps { flex-direction: column; align-items: center; }
+  .app-chip { width: min(100%, 300px); }
+}
+.app-chip strong { display: block; font-weight: 600; font-size: 16px; line-height: 1.2; }
+.app-chip small { display: block; color: var(--muted); font-size: 13.5px; line-height: 1.3; }
+
+/* ─── Sections ─────────────────────────────────────────────── */
+.section { padding: clamp(64px, 9vw, 120px) 0; }
+.section-head { display: grid; gap: 14px; margin-bottom: clamp(36px, 5vw, 56px); max-width: 40em; }
+.kicker { font: 600 13px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.section h2 { font: 400 clamp(2.4rem, 5vw, 3.6rem)/1 var(--serif); letter-spacing: -.02em; }
+.section-head p:not(.kicker) { color: var(--ink-2); font-size: 1.08rem; text-wrap: pretty; }
+
+/* ─── Apps ─────────────────────────────────────────────────── */
+.apps { border-top: 1px solid var(--line); }
+.app + .app { margin-top: clamp(80px, 11vw, 140px); }
+.app-head { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 28px); margin-bottom: clamp(24px, 3vw, 36px); }
+.app-icon { width: clamp(84px, 10vw, 120px); height: auto; flex: none; filter: drop-shadow(0 10px 18px rgba(40, 25, 10, .18)); }
+.app h3 { font: 400 clamp(2.4rem, 5vw, 3.4rem)/1 var(--serif); letter-spacing: -.02em; }
+.app--xcv h3 { font-family: var(--rounded); font-weight: 700; letter-spacing: -.04em; font-size: clamp(2.1rem, 4.4vw, 3rem); }
+.tagline { margin-top: 8px; font-size: clamp(1.05rem, 1.8vw, 1.3rem); color: var(--ink-2); }
+.meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px; border-radius: 999px;
+  font: 500 13px/1.1 var(--sans); color: var(--ink-2);
+  border: 1px solid var(--line-strong);
+}
+.pill--accent { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: color-mix(in srgb, var(--accent) 9%, transparent); }
+.app--xcv { --accent: var(--sage); }
+.app--percolate { --accent: var(--coffee); }
+.app--astrolical { --accent: var(--gold); }
+.ios-mask { border-radius: 22.5%; }
+a.pill { text-decoration: none; transition: background-color .2s; }
+a.pill:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+
+.features {
+  display: grid; gap: 28px 40px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  margin-top: clamp(32px, 4vw, 48px);
+}
+.features h4 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 9px; }
+.features h4::before { content: ""; width: 3px; height: 1em; border-radius: 2px; background: var(--accent); }
+.features p { color: var(--ink-2); font-size: .98rem; line-height: 1.55; text-wrap: pretty; }
+.features kbd {
+  white-space: nowrap;
+  font-size: .9em; padding: 1px 5px; border-radius: 5px;
+  border: 1px solid var(--line-strong); background: var(--surface);
+}
+
+/* ─── Stages: a slice of a Mac screen, just under the notch ── */
+.stage {
+  container-type: inline-size;
+  position: relative; overflow: hidden;
+  border-radius: clamp(14px, 2vw, 24px);
+  box-shadow: var(--shadow), inset 0 0 0 1px rgba(255, 255, 255, .08);
+  isolation: isolate;
+}
+.stage figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  padding: 0 4cqw 3.2cqw;
+  color: rgba(255, 255, 255, .86); font-size: clamp(12px, 1.5cqw, 15px); line-height: 1.45;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 16px;
+}
+.menubar {
+  position: absolute; inset: 0 0 auto 0; z-index: 1;
+  height: calc(32 * var(--pt));
+  padding-inline: calc(12 * var(--pt));
+  display: flex; align-items: center; justify-content: space-between;
+  font: 500 calc(13 * var(--pt))/1 var(--sans);
+  color: rgba(255, 255, 255, .96);
+  text-shadow: 0 0 calc(3 * var(--pt)) rgba(0, 0, 0, .18);
+  white-space: nowrap;
+}
+.menubar > span { display: flex; align-items: center; gap: calc(18 * var(--pt)); }
+.menubar b { font-weight: 700; }
+.menubar svg { width: auto; height: calc(15 * var(--pt)); fill: currentColor; }
+.menubar .mb-on {
+  display: grid; place-items: center;
+  height: calc(24 * var(--pt)); padding-inline: calc(7 * var(--pt));
+  margin-inline: calc(-7 * var(--pt));
+  border-radius: calc(12 * var(--pt));
+  background: rgba(255, 255, 255, .26);
+}
+
+.stage--xcv {
+  --shot: 76cqw;
+  aspect-ratio: 16 / 6.9;
+  background:
+    radial-gradient(70% 90% at 12% 105%, #25392d 0%, transparent 70%),
+    radial-gradient(60% 80% at 92% -5%, #a9c0ad 0%, transparent 65%),
+    radial-gradient(50% 60% at 55% 60%, #7d9683 0%, transparent 70%),
+    linear-gradient(165deg, #6c8672 0%, #45604f 55%, #2f4638 100%);
+}
+.stage--xcv > * { --pt: calc(var(--shot) / 920); }
+.xcv-shot {
+  position: absolute; z-index: 2; top: 0; left: 50%; translate: -50% 0;
+  width: var(--shot); height: auto;
+}
+.keys { display: flex; gap: 6px; flex: none; }
+.keys kbd {
+  display: grid; place-items: center;
+  min-width: clamp(28px, 4.6cqw, 46px); height: clamp(28px, 4.6cqw, 46px); padding: 0 .5em;
+  font-size: clamp(13px, 2cqw, 20px); font-weight: 600; color: #fff;
+  border-radius: clamp(7px, 1.1cqw, 11px);
+  background: rgba(255, 255, 255, .16);
+  border: 1px solid rgba(255, 255, 255, .28);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .18), 0 6px 14px -6px rgba(0, 0, 0, .35);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  text-shadow: none;
+}
+
+.stage--percolate {
+  --island: 46cqw;
+  aspect-ratio: 16 / 6;
+  background:
+    radial-gradient(70% 90% at 88% 108%, #4d2c1a 0%, transparent 70%),
+    radial-gradient(60% 80% at 8% -10%, #ecc79f 0%, transparent 65%),
+    radial-gradient(45% 55% at 45% 70%, #b07a51 0%, transparent 70%),
+    linear-gradient(160deg, #c08d62 0%, #93603c 55%, #5e3a24 100%);
+}
+.stage--percolate > * { --pt: calc(var(--island) / 291); }
+.perc-island {
+  position: absolute; z-index: 2; top: 0; left: 50%; translate: -50% 0;
+  width: var(--island); aspect-ratio: 1746 / 192;
+}
+.perc-island video {
+  width: 100%; height: 100%;
+  -webkit-clip-path: url(#island-clip); clip-path: url(#island-clip);
+}
+.perc-elapsed {
+  position: absolute; top: 0; height: 100%;
+  /* centre of the trailing wing: (6 + 50 + 179 + 25) / 291 of the island */
+  left: 89.35%; translate: -50% 0;
+  display: flex; align-items: center;
+  font: 500 calc(12 * var(--pt))/1 var(--rounded);
+  font-variant-numeric: tabular-nums;
+  color: #9e9e9e;
+  padding-top: calc(1 * var(--pt));
+}
+ul.perc-menu {
+  position: absolute; z-index: 2;
+  top: calc(36 * var(--pt)); right: calc(82 * var(--pt));
+  width: calc(236 * var(--pt));
+  padding: calc(5 * var(--pt));
+  border-radius: calc(12 * var(--pt));
+  background: rgba(246, 240, 234, .78);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4); backdrop-filter: blur(24px) saturate(1.4);
+  box-shadow: 0 0 0 calc(.5 * var(--pt)) rgba(0, 0, 0, .18), 0 calc(10 * var(--pt)) calc(30 * var(--pt)) rgba(40, 20, 5, .35);
+  color: #1d1d1f;
+  font: 400 calc(13 * var(--pt))/1 var(--sans);
+}
+.perc-menu li {
+  display: flex; align-items: center; justify-content: space-between;
+  height: calc(22 * var(--pt)); padding-inline: calc(8 * var(--pt)) calc(10 * var(--pt));
+  border-radius: calc(6 * var(--pt));
+  white-space: nowrap;
+}
+.perc-menu li::before { content: ""; width: calc(14 * var(--pt)); flex: none; font-weight: 600; }
+.perc-menu li.on::before { content: "✓"; }
+.perc-menu li span { flex: 1; }
+.perc-menu li.hl { background: #9b6a45; color: #fff; }
+.perc-menu li kbd { color: #86868b; font-family: var(--sans); }
+.perc-menu li.sep { height: calc(.5 * var(--pt)); padding: 0; margin: calc(5 * var(--pt)) calc(10 * var(--pt)); background: rgba(0, 0, 0, .14); }
+.perc-menu li.sep::before { content: none; }
+
+.stage--astrolical {
+  aspect-ratio: 16 / 9;
+  background:
+    url("/assets/img/stars.svg") 0 0 / 400px 400px,
+    radial-gradient(70% 60% at 50% 115%, #2d2b72 0%, transparent 70%),
+    radial-gradient(55% 50% at 12% -5%, #1f2d68 0%, transparent 70%),
+    linear-gradient(180deg, #0c1030 0%, #070918 100%);
+}
+.astro-wheel {
+  position: absolute; left: 50%; top: 50%; z-index: 1;
+  width: 80cqw; height: auto; aspect-ratio: 1;
+  translate: -50% -44%;
+  opacity: .55;
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 88%, transparent 99%);
+  mask-image: radial-gradient(circle closest-side, #000 88%, transparent 99%);
+  animation: wheel-turn 300s linear infinite;
+}
+@keyframes wheel-turn { to { rotate: 360deg; } }
+.phone {
+  position: absolute; z-index: 2; left: 50%; top: 13cqw;
+  width: 21cqw; height: auto;
+  border: .75cqw solid #05060d; border-radius: 3.4cqw;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .14), 0 3cqw 6cqw -1cqw rgba(0, 0, 0, .65);
+}
+.phone:first-child { translate: calc(-50% - 22cqw) 0; rotate: -6deg; }
+.phone:last-child { translate: calc(-50% + 22cqw) 0; rotate: 6deg; }
+.phone--front { z-index: 3; top: 6cqw; width: 24cqw; translate: -50% 0; }
+
+/* Container queries restyle a container's children, so the sizes are overridden there. */
+@container (max-width: 620px) {
+  .stage--xcv > * { --shot: 112cqw; }
+  .stage--percolate > * { --island: 84cqw; }
+  .menubar .mb-hide-sm { display: none; }
+  .perc-menu { right: 3cqw; top: calc(40 * var(--pt)); width: calc(200 * var(--pt)); font-size: calc(11 * var(--pt)); }
+  .perc-menu li { height: calc(19 * var(--pt)); }
+  .phone { width: 34cqw; top: 17cqw; }
+  .phone:first-child { translate: calc(-50% - 29cqw) 0; }
+  .phone:last-child { translate: calc(-50% + 29cqw) 0; }
+  .phone--front { width: 40cqw; top: 8cqw; }
+  .astro-wheel { width: 130cqw; }
+}
+@media (max-width: 620px) {
+  .stage--xcv { aspect-ratio: 4 / 3.1; }
+  .stage--percolate { aspect-ratio: 4 / 2.9; }
+  .stage--astrolical { aspect-ratio: 4 / 3.9; }
+  .stage figcaption { flex-direction: column; align-items: flex-start; font-size: 12.5px; padding: 0 4.5cqw 4.5cqw; }
+}
+
+/* ─── About ────────────────────────────────────────────────── */
+.about { border-top: 1px solid var(--line); }
+.about-grid {
+  display: grid; gap: clamp(32px, 6vw, 80px);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: start;
+}
+.portrait {
+  position: sticky; top: 96px;
+  width: 100%; height: auto; aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: clamp(20px, 3vw, 32px);
+  box-shadow: var(--shadow);
+}
+.about-copy { display: grid; gap: 18px; }
+.about-copy > p { font-size: 1.1rem; color: var(--ink-2); text-wrap: pretty; }
+.about .about-lead { font: 400 clamp(1.7rem, 2.8vw, 2.25rem)/1.2 var(--serif); color: var(--ink); letter-spacing: -.01em; text-wrap: pretty; }
+.about-copy .callsign { font-family: var(--mono); font-size: .92em; letter-spacing: .02em; }
+
+.lists { display: grid; gap: clamp(40px, 5vw, 56px); margin-top: clamp(40px, 5vw, 56px); }
+.list h3 { font: 600 13px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.list li { border-top: 1px solid var(--line); }
+.list li:last-child { border-bottom: 1px solid var(--line); }
+.row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px;
+  padding: 16px 0; text-decoration: none;
+}
+a.row:hover .row-title { text-decoration: underline; text-decoration-color: var(--line-strong); }
+.row-title { font-weight: 600; }
+.row-title .arrow { display: inline-block; color: var(--muted); font-weight: 400; transition: translate .2s; }
+a.row:hover .arrow { translate: 2px -2px; }
+.row-desc { grid-column: 1; color: var(--muted); font-size: .96rem; line-height: 1.5; }
+.row-meta { grid-row: 1; grid-column: 2; color: var(--muted); font-size: .9rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+@media (max-width: 820px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .portrait { position: static; max-width: 280px; }
+}
+
+/* ─── Elsewhere / footer ───────────────────────────────────── */
+.elsewhere { border-top: 1px solid var(--line); text-align: center; }
+.elsewhere h2 { font: 400 clamp(2.6rem, 6.5vw, 5rem)/1 var(--serif); letter-spacing: -.025em; }
+.elsewhere h2 em { font-style: italic; }
+.elsewhere > .wrap > p { margin: 18px auto 0; max-width: 34em; color: var(--ink-2); font-size: 1.08rem; }
+.socials { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.socials a {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 18px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--line);
+  text-decoration: none; font-weight: 500; font-size: 15px;
+  transition: border-color .2s, transform .25s cubic-bezier(.3, 1.4, .5, 1);
+}
+.socials a:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.socials svg { width: 16px; height: 16px; fill: currentColor; }
+.socials small { color: var(--muted); font-size: 13.5px; }
+
+footer {
+  padding: 36px 0 calc(40px + env(safe-area-inset-bottom));
+  color: var(--muted); font-size: 14px;
+}
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; border-top: 1px solid var(--line); padding-top: 28px; }
+footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .04em; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Percolate's IslandShape, rendered from the app's geometry and normalised to its bounding box. -->
+    <clipPath id="island-clip" clipPathUnits="objectBoundingBox">
+      <path d="M0 0 L1 0 Q.9794 0 .9794 .1875 L.9794 .5937 C.9794 .8181 .9594 1 .9347 1 L.0653 1 C.0406 1 .0206 .8181 .0206 .5938 L.0206 .1875 Q.0206 0 0 0 Z"/>
+    </clipPath>
+    <symbol id="i-wifi" viewBox="0 0 20 15"><path d="M10 12.2a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8Zm0-4.6c1.7 0 3.3.7 4.5 1.8l-1.3 1.4a4.6 4.6 0 0 0-6.4 0L5.5 9.4A6.5 6.5 0 0 1 10 7.6Zm0-4.3c2.9 0 5.5 1.1 7.5 3l-1.3 1.4A8.8 8.8 0 0 0 10 5.2c-2.4 0-4.6.9-6.2 2.5L2.5 6.3a10.7 10.7 0 0 1 7.5-3ZM10 0c3.8 0 7.3 1.5 9.9 3.9l-1.3 1.4A12.4 12.4 0 0 0 10 1.9c-3.3 0-6.3 1.3-8.6 3.4L.1 3.9A14.3 14.3 0 0 1 10 0Z"/></symbol>
+    <symbol id="i-battery" viewBox="0 0 27 13"><path d="M4 0h17a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4Zm0 1.2A2.8 2.8 0 0 0 1.2 4v5A2.8 2.8 0 0 0 4 11.8h17A2.8 2.8 0 0 0 23.8 9V4A2.8 2.8 0 0 0 21 1.2H4Zm-.4 1.9h13.8v6.8H3.6a.9.9 0 0 1-.9-.9v-5a.9.9 0 0 1 .9-.9ZM25.6 4.6c.8.3 1.4 1 1.4 1.9s-.6 1.6-1.4 1.9V4.6Z"/></symbol>
+    <symbol id="i-cup" viewBox="0 0 22 16"><path d="M2.5 1.5h13a.9.9 0 0 1 .9.9v.8h1.3a3.3 3.3 0 0 1 0 6.6h-1.8a7 7 0 0 1-5.9 3.5H7.6a6 6 0 0 1-6-6V2.4a.9.9 0 0 1 .9-.9Zm13.9 3.4V8c0 .1 0 .1 0 0h1.3a1.6 1.6 0 0 0 0-3.2h-1.3ZM.8 13.8h18.4a.8.8 0 0 1 0 1.7H.8a.8.8 0 0 1 0-1.7Z"/></symbol>
+    <symbol id="i-clip" viewBox="0 0 18 18"><path d="M6 0h7.5A2.5 2.5 0 0 1 16 2.5v10a2.5 2.5 0 0 1-2.5 2.5H13v-1.5h.5a1 1 0 0 0 1-1v-10a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1V3H3.5v-.5A2.5 2.5 0 0 1 6 0ZM2.5 4h6.2L12 7.3v8.2a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 0 15.5v-9A2.5 2.5 0 0 1 2.5 4Zm0 1.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V8.5H8.2A.7.7 0 0 1 7.5 7.8V5.5h-5Z"/></symbol>
+  </defs>
+</svg>
+
+<header class="island">
+  <span class="island-bg" aria-hidden="true"></span>
+  <nav aria-label="Primary">
+    <a class="island-home" href="#top" aria-label="Ryan Collins, home"><img src="/assets/img/ryan-360.jpg" alt="" width="24" height="24"><span class="hide-sm">Ryan Collins</span></a>
+    <span class="island-cam" aria-hidden="true"></span>
+    <a href="#apps">Apps</a>
+    <a href="#about">About</a>
+    <a class="hide-sm" href="#elsewhere">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <p class="eyebrow">Ryan Collins · indie developer in Ontario, Canada</p>
+      <h1>Indie apps,<br> <em>made with care.</em></h1>
+      <p class="lead">I've spent twenty years building systems for other people, from NFT art marketplaces to Ethereum rollups. These days I'm also making things of my own: two little Mac utilities that live up in the notch, and an astrology calendar for your phone.</p>
+      <div class="hero-apps">
+        <a class="app-chip" href="#xcv">
+          <img src="/assets/img/xcv-icon-256.png" alt="" width="48" height="48">
+          <span><strong>xcv</strong><small>Your clipboard, in the notch</small></span>
+        </a>
+        <a class="app-chip" href="#percolate">
+          <img src="/assets/img/percolate-icon-256.png" alt="" width="48" height="48">
+          <span><strong>Percolate</strong><small>Keeps your Mac awake</small></span>
+        </a>
+        <a class="app-chip" href="#astrolical">
+          <img class="ios-mask" src="/assets/img/astrolical-icon-256.png" alt="" width="48" height="48">
+          <span><strong>Astrolical</strong><small>Your cosmic calendar</small></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section apps" id="apps" aria-labelledby="apps-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Apps</p>
+        <h2 id="apps-title">Things I'm making</h2>
+        <p>Two small utilities that live in your Mac's notch, and a bigger one about the sky. All of them sweated over down to the spring curves. The Mac apps have no networking code at all, so your stuff stays on your Mac.</p>
+      </div>
+
+      <article class="app app--xcv" id="xcv" aria-labelledby="xcv-title">
+        <header class="app-head">
+          <img class="app-icon" src="/assets/img/xcv-icon-256.png" srcset="/assets/img/xcv-icon-256.png 256w, /assets/img/xcv-icon-512.png 512w" sizes="120px" alt="xcv app icon" width="120" height="120">
+          <div>
+            <h3 id="xcv-title">xcv</h3>
+            <p class="tagline">A clipboard manager that lives in the notch.</p>
+            <p class="meta"><span class="pill pill--accent">Coming soon</span><span class="pill">macOS 15 or later</span></p>
+          </div>
+        </header>
+
+        <figure class="stage stage--xcv">
+          <div class="menubar" aria-hidden="true">
+            <span><b>Zed</b><span>File</span><span>Edit</span><span class="mb-hide-sm">Selection</span><span class="mb-hide-sm">View</span></span>
+            <span><svg viewBox="0 0 18 18"><use href="#i-clip"/></svg><svg class="mb-hide-sm" viewBox="0 0 20 15"><use href="#i-wifi"/></svg><svg class="mb-hide-sm" viewBox="0 0 27 13"><use href="#i-battery"/></svg><span>Wed 9:41</span></span>
+          </div>
+          <img class="xcv-shot" src="/assets/img/xcv-island.png" srcset="/assets/img/xcv-island-920.png 920w, /assets/img/xcv-island.png 1840w" sizes="(min-width: 1180px) 852px, (min-width: 620px) 76vw, 118vw" width="1840" height="764" alt="The xcv panel dropped down from the MacBook notch. It shows recent clipboard items as cards (an image, a colour swatch, a Swift snippet and a link), each marked with the app it came from and how long ago it was copied. A search field sits above, with History and Pinned tabs, and type filters below.">
+          <figcaption>
+            <span>Press the shortcut and the notch springs open with everything you've copied.</span>
+            <span class="keys" aria-label="Shift Command V"><kbd>⇧</kbd><kbd>⌘</kbd><kbd>V</kbd></span>
+          </figcaption>
+        </figure>
+
+        <ul class="features" role="list">
+          <li>
+            <h4>Springs from the notch</h4>
+            <p>One spring morphs the notch into a panel of cards, newest first. No notch? It hangs from the top edge, or slides in from any side of the screen.</p>
+          </li>
+          <li>
+            <h4>Pastes where you were</h4>
+            <p><kbd>↩</kbd> pastes straight into the app you came from, <kbd>⌘1–9</kbd> grabs any of the first nine cards, and plain-text paste is one modifier away.</p>
+          </li>
+          <li>
+            <h4>Knows what you copied</h4>
+            <p>Text, links, images, files and colours each get a real preview and the icon of the app they came from. Search, filter, pin, drag out, or Quick Look with Space.</p>
+          </li>
+          <li>
+            <h4>Private by design</h4>
+            <p>Sandboxed with no network access. Anything a password manager marks as concealed is skipped, and you can exclude any app you like.</p>
+          </li>
+        </ul>
+      </article>
+
+      <article class="app app--percolate" id="percolate" aria-labelledby="percolate-title">
+        <header class="app-head">
+          <img class="app-icon" src="/assets/img/percolate-icon-256.png" srcset="/assets/img/percolate-icon-256.png 256w, /assets/img/percolate-icon-512.png 512w" sizes="120px" alt="Percolate app icon" width="120" height="120">
+          <div>
+            <h3 id="percolate-title">Percolate</h3>
+            <p class="tagline">Keeps your Mac awake, one sip at a time.</p>
+            <p class="meta"><span class="pill pill--accent">Coming soon</span><span class="pill">macOS 14 or later</span></p>
+          </div>
+        </header>
+
+        <figure class="stage stage--percolate">
+          <div class="menubar" aria-hidden="true">
+            <span class="mb-hide-sm"><b>Safari</b><span>File</span><span>Edit</span></span>
+            <span><span class="mb-on"><svg viewBox="0 0 22 16"><use href="#i-cup"/></svg></span><svg class="mb-hide-sm" viewBox="0 0 20 15"><use href="#i-wifi"/></svg><span class="mb-hide-sm">9:41</span></span>
+          </div>
+          <div class="perc-island">
+            <video src="/assets/img/percolate-island.mp4" poster="/assets/img/percolate-poster.png" width="1746" height="192" muted loop playsinline preload="metadata" disablepictureinpicture aria-hidden="true"></video>
+            <span class="perc-elapsed" data-elapsed aria-hidden="true">0:00</span>
+          </div>
+          <ul class="perc-menu" role="list" aria-hidden="true">
+            <li class="hl"><span>Stop Percolating</span></li>
+            <li class="sep"></li>
+            <li class="on"><span>Open at Login</span></li>
+            <li class="on"><span>Start Percolating When Opened</span></li>
+            <li class="sep"></li>
+            <li><span>Quit Percolate</span><kbd>⌘Q</kbd></li>
+          </ul>
+          <figcaption>
+            <span>While it's on, a little cappuccino tips toward the notch for a sip. The timer is live: it started when you opened this page.</span>
+          </figcaption>
+        </figure>
+
+        <ul class="features" role="list">
+          <li>
+            <h4>One click</h4>
+            <p>Click the cup in the menu bar to start or stop. Right-click for the menu. That's the whole interface.</p>
+          </li>
+          <li>
+            <h4>A cup that sips</h4>
+            <p>The notch grows like a Dynamic Island, the cup drinks from it every few seconds, and your uptime sits on the other side. Four sips to a cup, then it refills.</p>
+          </li>
+          <li>
+            <h4>Awake from login</h4>
+            <p>Turn on Open at Login and Start Percolating When Opened, and your Mac stays awake from the moment you sign in.</p>
+          </li>
+          <li>
+            <h4>Light as foam</h4>
+            <p>Built on macOS's own <code>caffeinate</code>. The animation runs in the system's render server, so Percolate idles at about 0% CPU. No notch? It draws its own.</p>
+          </li>
+        </ul>
+      </article>
+
+      <article class="app app--astrolical" id="astrolical" aria-labelledby="astrolical-title">
+        <header class="app-head">
+          <img class="app-icon ios-mask" src="/assets/img/astrolical-icon-256.png" srcset="/assets/img/astrolical-icon-256.png 256w, /assets/img/astrolical-icon-512.png 512w" sizes="120px" alt="Astrolical app icon" width="120" height="120">
+          <div>
+            <h3 id="astrolical-title">Astrolical</h3>
+            <p class="tagline">Your cosmic calendar companion.</p>
+            <p class="meta"><a class="pill pill--accent" href="https://astrolical.com">Beta on TestFlight <span aria-hidden="true">↗</span></a><span class="pill">iPhone · Android soon</span></p>
+          </div>
+        </header>
+
+        <figure class="stage stage--astrolical">
+          <img class="astro-wheel" src="/assets/img/astrolical-wheel.jpg" alt="" width="1024" height="1024" loading="lazy">
+          <div class="phones">
+            <img class="phone" src="/assets/img/astrolical-transits.jpg" width="720" height="1440" loading="lazy" alt="Astrolical's transit timeline for a week in July 2026: each sky event is a pill of planet and aspect glyphs, with an arrow running across the days it's active.">
+            <img class="phone phone--front" src="/assets/img/astrolical-home.jpg" width="720" height="1440" loading="lazy" alt="Astrolical's home screen: an advisory for an intense energy period, today's new moon at 29°49′ Cancer in the 12th house, the next new and full moons, and a retrograde watch listing Mercury and Neptune with exact degrees and houses.">
+            <img class="phone" src="/assets/img/astrolical-calendar.jpg" width="720" height="1440" loading="lazy" alt="Astrolical's calendar for July 2026 with Tuesday the 14th selected, listing that day's transits to the natal chart with exact times.">
+          </div>
+        </figure>
+
+        <ul class="features" role="list">
+          <li>
+            <h4>Precise, not vague</h4>
+            <p>Every screen is drawn from live ephemeris data: exact degrees, natal house placements, retrograde stations and void-of-course windows.</p>
+          </li>
+          <li>
+            <h4>Transits you can read</h4>
+            <p>A week of sky events in glyph notation, and your month as timeline bars, so you can see what's coming and plan around it.</p>
+          </li>
+          <li>
+            <h4>Your chart, drawn properly</h4>
+            <p>A vector birth chart with canonical glyphs, orb-weighted aspects, and every cusp and degree placed with astronomical precision.</p>
+          </li>
+          <li>
+            <h4>Go deeper with Pro</h4>
+            <p>AI chart interpretations, synastry, composite and progressed charts, solar returns, and alerts before major transits hit your chart.</p>
+          </li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section about" id="about" aria-label="About">
+    <div class="wrap about-grid">
+      <img class="portrait" src="/assets/img/ryan-720.jpg" srcset="/assets/img/ryan-360.jpg 360w, /assets/img/ryan-720.jpg 720w" sizes="(min-width: 820px) 40vw, 280px" width="720" height="720" alt="Ryan Collins, smiling, at dinner in front of a whitewashed stone wall." loading="lazy">
+      <div>
+        <div class="about-copy">
+          <p class="kicker">About</p>
+          <h2 class="about-lead">I'm Ryan, a technical leader and builder with twenty years at the intersection of systems, craft and curiosity.</h2>
+          <p>I led engineering at SuperRare, one of the first NFT art marketplaces, from the Rare Protocol contracts to the platform behind them. I've since built next-generation Ethereum infrastructure with init4 on Signet. Through <a href="https://cedarinventive.com">Cedar Inventive</a>, I design, build and run software for schools, non-profits and local businesses. My own apps are where I get to sweat the details just for fun.</p>
+          <p>Away from the keyboard you'll find me on the air as a ham radio operator (<span class="callsign">VA3RYC</span> · <span class="callsign">KO4YVB</span>), tinkering with electronics, or working with my hands. I've also volunteered in emergency medical response and Waldorf education.</p>
+        </div>
+
+        <div class="lists">
+          <div class="list">
+            <h3>Work</h3>
+            <ul role="list">
+              <li><a class="row" href="https://signet.sh"><span class="row-title">Signet at init4 <span class="arrow">↗</span></span><span class="row-meta">Rust · Solidity</span><span class="row-desc">Rollup sequencing, block building and the Signet network.</span></a></li>
+              <li><a class="row" href="https://superrare.com"><span class="row-title">SuperRare <span class="arrow">↗</span></span><span class="row-meta">Engineering lead</span><span class="row-desc">Rare Protocol smart contracts and the infrastructure behind the marketplace.</span></a></li>
+              <li><a class="row" href="https://cedarinventive.com"><span class="row-title">Cedar Inventive <span class="arrow">↗</span></span><span class="row-meta">Studio</span><span class="row-desc">Platforms, infrastructure and apps for organizations large and small.</span></a></li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <h3>Open source</h3>
+            <ul role="list">
+              <li><a class="row" href="https://github.com/init4tech/signet-sdk"><span class="row-title">Signet SDK <span class="arrow">↗</span></span><span class="row-meta">Rust</span><span class="row-desc">Ecosystem crates for the Signet network.</span></a></li>
+              <li><a class="row" href="https://github.com/rareprotocol/core"><span class="row-title">Rare Protocol <span class="arrow">↗</span></span><span class="row-meta">Solidity</span><span class="row-desc">Core smart contracts powering the SuperRare marketplace.</span></a></li>
+              <li><a class="row" href="https://github.com/rymcol/SwiftCron"><span class="row-title">SwiftCron <span class="arrow">↗</span></span><span class="row-meta">Swift</span><span class="row-desc">Scheduled and repeating functions made easy, on macOS and Linux.</span></a></li>
+              <li><a class="row" href="https://github.com/rymcol/Server-Side-Swift-Benchmarking"><span class="row-title">Server-Side Swift Benchmarking <span class="arrow">↗</span></span><span class="row-meta">Swift</span><span class="row-desc">Server-side Swift frameworks, benchmarked against Node.js.</span></a></li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <h3>Talks &amp; interviews</h3>
+            <ul role="list">
+              <li><a class="row" href="https://www.youtube.com/watch?v=3FvB0N09hCg"><span class="row-title">Hashing It Out #106: SuperRare <span class="arrow">↗</span></span><span class="row-meta">Jul 2021</span><span class="row-desc">Podcast interview on how SuperRare works and where it was heading.</span></a></li>
+              <li><div class="row"><span class="row-title">NFTs &amp; SuperRare, with ACRIA</span><span class="row-meta">Oct 2021</span><span class="row-desc">Panel discussion with Zack Yanger.</span></div></li>
+              <li><div class="row"><span class="row-title">The Dialogue: Platform Engineering &amp; DevOps</span><span class="row-meta">Dec 2020</span><span class="row-desc">Harnham's LinkedIn Live series.</span></div></li>
+              <li><div class="row"><span class="row-title">Staying Data Secure While Working Flexibly</span><span class="row-meta">Nov 2020</span><span class="row-desc">A discussion with Harnham.</span></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section elsewhere" id="elsewhere" aria-labelledby="elsewhere-title">
+    <div class="wrap">
+      <h2 id="elsewhere-title">Say <em>hello</em></h2>
+      <p>Follow along to hear when xcv and Percolate ship and Astrolical leaves beta, or just to say hi.</p>
+      <ul class="socials" role="list">
+        <li><a href="https://x.com/rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 2h3.3l-7.2 8.3L22.4 22h-6.7l-5.2-6.8L4.5 22H1.2l7.7-8.8L.8 2h6.8l4.7 6.2L17.8 2Zm-1.2 18h1.8L6.7 3.9H4.7L16.6 20Z"/></svg>X <small>@rymcol</small></a></li>
+        <li><a href="https://github.com/rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>GitHub <small>rymcol</small></a></li>
+        <li><a href="https://linkedin.com/in/rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2ZM8 19H5V9.5h3V19ZM6.5 8.2a1.7 1.7 0 1 1 0-3.5 1.7 1.7 0 0 1 0 3.5ZM19 19h-3v-4.6c0-1.1 0-2.5-1.5-2.5s-1.8 1.2-1.8 2.4V19h-3V9.5h2.9v1.3c.4-.8 1.4-1.5 2.8-1.5 3 0 3.6 2 3.6 4.6V19Z"/></svg>LinkedIn</a></li>
+        <li><a href="https://dribbble.com/rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21Zm6.9 4.9a8.9 8.9 0 0 1 2 5.5c-.3 0-3.3-.7-6.3-.3l-.8-1.8c3.4-1.4 4.9-3.3 5.1-3.4ZM12 3.1c2.2 0 4.3.8 5.9 2.2-.2.2-1.5 2-4.9 3.3-1.6-2.9-3.3-5.2-3.6-5.6a9 9 0 0 1 2.6-.3ZM7.8 4.1c.3.4 2 2.7 3.6 5.5A34.8 34.8 0 0 1 3.3 10a9 9 0 0 1 4.5-5.9ZM3.1 12v-.3c.4 0 5 .1 9.7-1.3l.7 1.5c-3.6 1.2-6.2 4.4-6.6 5A8.9 8.9 0 0 1 3.1 12Zm8.9 8.9c-2 0-3.9-.7-5.5-1.9.2-.4 2.3-4.2 7.4-6l.1-.1a36.6 36.6 0 0 1 1.9 6.8c-1.2.8-2.5 1.2-3.9 1.2Zm5.4-2a38 38 0 0 0-1.8-6.4c2.8-.4 5.2.3 5.5.4a8.9 8.9 0 0 1-3.7 6Z"/></svg>Dribbble</a></li>
+        <li><a href="https://youtube.com/c/RyanCollins"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.7 15V9l5.8 3-5.8 3Z"/></svg>YouTube</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Ryan Collins · Made by hand in Ontario, Canada. No cookies, no trackers.</span>
+    <span class="callsign">VA3RYC · KO4YVB</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // Percolate's timer, counting like the real one: m:ss, then h:mm:ss after an hour.
+  const elapsed = document.querySelector("[data-elapsed]");
+  const start = Date.now();
+  const format = (s) => {
+    const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), sec = String(s % 60).padStart(2, "0");
+    return h ? `${h}:${String(m).padStart(2, "0")}:${sec}` : `${m}:${sec}`;
+  };
+  const tick = () => {
+    const ms = Date.now() - start;
+    elapsed.textContent = format(Math.floor(ms / 1000));
+    setTimeout(tick, 1000 - (ms % 1000));
+  };
+  tick();
+
+  // The cup only drinks while you can see it, and never when motion is reduced.
+  const video = document.querySelector(".perc-island video");
+  const still = matchMedia("(prefers-reduced-motion: reduce)");
+  let visible = false;
+  const sync = () => {
+    if (visible && !still.matches) video.play().catch(() => {});
+    else video.pause();
+  };
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { rootMargin: "100px" }).observe(video);
+  still.addEventListener("change", sync);
+})();
+</script>
+</body>
+</html>
