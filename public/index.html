@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ryan Collins · Indie apps, made with care</title>
-<meta name="description" content="Ryan Collins is an indie developer in Ontario, Canada, making carefully built apps: xcv, a clipboard manager that lives in the Mac's notch; Percolate, which keeps your Mac awake; and Astrolical, a cosmic calendar companion.">
+<meta name="description" content="Ryan Collins is an indie developer in Ontario building systems and careful apps: xcv and Percolate for the Mac notch, Astrolical for your phone — after twenty years across SuperRare, Signet, and Cedar Inventive.">
+<meta name="author" content="Ryan Collins">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f4f0e8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#11100e" media="(prefers-color-scheme: dark)">
@@ -14,14 +15,47 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="manifest" href="/manifest.json">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="en_CA">
+<meta property="og:site_name" content="Ryan Collins">
 <meta property="og:url" content="https://rycollins.com/">
 <meta property="og:title" content="Ryan Collins · Indie apps, made with care">
-<meta property="og:description" content="xcv puts your clipboard history in the notch. Percolate keeps your Mac awake, one sip at a time. Astrolical is your cosmic calendar companion.">
+<meta property="og:description" content="Systems craft and indie products from Ontario: xcv and Percolate live in the Mac notch; Astrolical is your cosmic calendar companion.">
 <meta property="og:image" content="https://rycollins.com/assets/img/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ryan Collins — indie apps, made with care">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@rymcol">
 <meta name="twitter:creator" content="@rymcol">
+<meta name="twitter:title" content="Ryan Collins · Indie apps, made with care">
+<meta name="twitter:description" content="Systems craft and indie products from Ontario: xcv and Percolate live in the Mac notch; Astrolical is your cosmic calendar companion.">
+<meta name="twitter:image" content="https://rycollins.com/assets/img/og.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ryan Collins",
+  "url": "https://rycollins.com/",
+  "image": "https://rycollins.com/assets/img/ryan-720.jpg",
+  "jobTitle": "Indie developer",
+  "description": "Ontario indie developer with twenty years of systems work. Maker of xcv, Percolate, and Astrolical; engineering across SuperRare, init4 Signet, and Cedar Inventive.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressRegion": "Ontario",
+    "addressCountry": "CA"
+  },
+  "sameAs": [
+    "https://github.com/rymcol",
+    "https://x.com/rymcol",
+    "https://www.linkedin.com/in/rymcol",
+    "https://dribbble.com/rymcol",
+    "https://www.youtube.com/c/RyanCollins",
+    "https://cedarinventive.com",
+    "https://xcv.rycollins.com",
+    "https://astrolical.com"
+  ]
+}
+</script>
 <link rel="preload" href="/assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face {
@@ -480,7 +514,10 @@ footer {
   padding: 36px 0 calc(40px + env(safe-area-inset-bottom));
   color: var(--muted); font-size: 14px;
 }
-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; border-top: 1px solid var(--line); padding-top: 28px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; border-top: 1px solid var(--line); padding-top: 28px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+footer nav a { color: var(--muted); text-decoration: none; }
+footer nav a:hover { color: var(--ink); }
 footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .04em; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -512,20 +549,20 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
     <span class="island-cam" aria-hidden="true"></span>
     <a href="#apps">Apps</a>
     <a href="#about">About</a>
-    <a class="hide-sm" href="#elsewhere">Contact</a>
+    <a href="#elsewhere">Hello</a>
   </nav>
 </header>
 
 <main id="main">
   <section class="hero" id="top">
     <div class="wrap">
-      <p class="eyebrow">Ryan Collins · indie developer in Ontario, Canada</p>
+      <p class="eyebrow">Ontario · systems, craft &amp; indie products</p>
       <h1>Indie apps,<br> <em>made with care.</em></h1>
-      <p class="lead">I've spent twenty years building systems for other people, from NFT art marketplaces to Ethereum rollups. These days I'm also making things of my own: two little Mac utilities that live up in the notch, and an astrology calendar for your phone.</p>
+      <p class="lead">Twenty years building systems for other people — NFT art marketplaces, Ethereum rollups, platforms for schools and shops. These days I'm also making things of my own: careful Mac utilities that live in the notch, and a cosmic calendar for your phone. Same craft, just closer to the glass.</p>
       <div class="hero-apps">
         <a class="app-chip" href="#xcv">
           <img src="/assets/img/xcv-icon-256.png" alt="" width="48" height="48">
-          <span><strong>xcv</strong><small>Your clipboard, in the notch</small></span>
+          <span><strong>xcv</strong><small>Clipboard history, in the notch</small></span>
         </a>
         <a class="app-chip" href="#percolate">
           <img src="/assets/img/percolate-icon-256.png" alt="" width="48" height="48">
@@ -533,7 +570,7 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
         </a>
         <a class="app-chip" href="#astrolical">
           <img class="ios-mask" src="/assets/img/astrolical-icon-256.png" alt="" width="48" height="48">
-          <span><strong>Astrolical</strong><small>Your cosmic calendar</small></span>
+          <span><strong>Astrolical</strong><small>Cosmic calendar companion</small></span>
         </a>
       </div>
     </div>
@@ -544,7 +581,7 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
       <div class="section-head">
         <p class="kicker">Apps</p>
         <h2 id="apps-title">Things I'm making</h2>
-        <p>Two small utilities that live in your Mac's notch, and a bigger one about the sky. All of them sweated over down to the spring curves. The Mac apps have no networking code at all, so your stuff stays on your Mac.</p>
+        <p>Two utilities that live in your Mac's notch, and one about the sky — each sweated over down to the spring curves. The Mac apps ship with no networking code at all, so your stuff stays on your Mac.</p>
       </div>
 
       <article class="app app--xcv" id="xcv" aria-labelledby="xcv-title">
@@ -553,7 +590,7 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
           <div>
             <h3 id="xcv-title">xcv</h3>
             <p class="tagline">A clipboard manager that lives in the notch.</p>
-            <p class="meta"><a class="pill pill--accent" href="https://xcv.rycollins.com">Coming soon · Learn more <span aria-hidden="true">↗</span></a><span class="pill">macOS 15 or later</span></p>
+            <p class="meta"><a class="pill pill--accent" href="https://xcv.rycollins.com" rel="noopener noreferrer">Coming soon · Learn more <span aria-hidden="true">↗</span></a><span class="pill">macOS 15 or later</span></p>
           </div>
         </header>
 
@@ -647,7 +684,7 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
           <div>
             <h3 id="astrolical-title">Astrolical</h3>
             <p class="tagline">Your cosmic calendar companion.</p>
-            <p class="meta"><a class="pill pill--accent" href="https://astrolical.com">Beta on TestFlight <span aria-hidden="true">↗</span></a><span class="pill">iPhone · Android soon</span></p>
+            <p class="meta"><a class="pill pill--accent" href="https://astrolical.com" rel="noopener noreferrer">Beta on TestFlight <span aria-hidden="true">↗</span></a><span class="pill">iPhone · Android soon</span></p>
           </div>
         </header>
 
@@ -682,14 +719,14 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
     </div>
   </section>
 
-  <section class="section about" id="about" aria-label="About">
+  <section class="section about" id="about" aria-labelledby="about-title">
     <div class="wrap about-grid">
       <img class="portrait" src="/assets/img/ryan-720.jpg" srcset="/assets/img/ryan-360.jpg 360w, /assets/img/ryan-720.jpg 720w" sizes="(min-width: 820px) 40vw, 280px" width="720" height="720" alt="Ryan Collins, smiling, at dinner in front of a whitewashed stone wall." loading="lazy">
       <div>
         <div class="about-copy">
           <p class="kicker">About</p>
-          <h2 class="about-lead">I'm Ryan, a technical leader and builder with twenty years at the intersection of systems, craft and curiosity.</h2>
-          <p>I led engineering at SuperRare, one of the first NFT art marketplaces, from the Rare Protocol contracts to the platform behind them. I've since built next-generation Ethereum infrastructure with init4 on Signet. Through <a href="https://cedarinventive.com">Cedar Inventive</a>, I design, build and run software for schools, non-profits and local businesses. My own apps are where I get to sweat the details just for fun.</p>
+          <h2 class="about-lead" id="about-title">I'm Ryan — systems person, indie maker, and someone who still cares how the spring feels when a panel opens.</h2>
+          <p>I led engineering at SuperRare, one of the first NFT art marketplaces, from the Rare Protocol contracts to the platform behind them. I've since built next-generation Ethereum infrastructure with <a href="https://signet.sh" rel="noopener noreferrer">init4 on Signet</a>. Through <a href="https://cedarinventive.com" rel="noopener noreferrer">Cedar Inventive</a>, I design, build and run software for schools, non-profits and local businesses. My own apps — <a href="#xcv">xcv</a>, <a href="#percolate">Percolate</a>, <a href="#astrolical">Astrolical</a> — are where I get to sweat the details just for fun.</p>
           <p>Away from the keyboard you'll find me on the air as a ham radio operator (<span class="callsign">VA3RYC</span> · <span class="callsign">KO4YVB</span>), tinkering with electronics, or working with my hands. I've also volunteered in emergency medical response and Waldorf education.</p>
         </div>
 
@@ -697,26 +734,27 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
           <div class="list">
             <h3>Work</h3>
             <ul role="list">
-              <li><a class="row" href="https://signet.sh"><span class="row-title">Signet at init4 <span class="arrow">↗</span></span><span class="row-meta">Rust · Solidity</span><span class="row-desc">Rollup sequencing, block building and the Signet network.</span></a></li>
-              <li><a class="row" href="https://superrare.com"><span class="row-title">SuperRare <span class="arrow">↗</span></span><span class="row-meta">Engineering lead</span><span class="row-desc">Rare Protocol smart contracts and the infrastructure behind the marketplace.</span></a></li>
-              <li><a class="row" href="https://cedarinventive.com"><span class="row-title">Cedar Inventive <span class="arrow">↗</span></span><span class="row-meta">Studio</span><span class="row-desc">Platforms, infrastructure and apps for organizations large and small.</span></a></li>
+              <li><a class="row" href="https://signet.sh" rel="noopener noreferrer"><span class="row-title">Signet at init4 <span class="arrow">↗</span></span><span class="row-meta">Rust · Solidity</span><span class="row-desc">Rollup sequencing, block building and the Signet network.</span></a></li>
+              <li><a class="row" href="https://superrare.com" rel="noopener noreferrer"><span class="row-title">SuperRare <span class="arrow">↗</span></span><span class="row-meta">Engineering lead</span><span class="row-desc">Rare Protocol smart contracts and the infrastructure behind the marketplace.</span></a></li>
+              <li><a class="row" href="https://cedarinventive.com" rel="noopener noreferrer"><span class="row-title">Cedar Inventive <span class="arrow">↗</span></span><span class="row-meta">Studio</span><span class="row-desc">Platforms, infrastructure and indie apps for organizations and my own shelf.</span></a></li>
             </ul>
           </div>
 
           <div class="list">
             <h3>Open source</h3>
             <ul role="list">
-              <li><a class="row" href="https://github.com/init4tech/signet-sdk"><span class="row-title">Signet SDK <span class="arrow">↗</span></span><span class="row-meta">Rust</span><span class="row-desc">Ecosystem crates for the Signet network.</span></a></li>
-              <li><a class="row" href="https://github.com/rareprotocol/core"><span class="row-title">Rare Protocol <span class="arrow">↗</span></span><span class="row-meta">Solidity</span><span class="row-desc">Core smart contracts powering the SuperRare marketplace.</span></a></li>
-              <li><a class="row" href="https://github.com/rymcol/SwiftCron"><span class="row-title">SwiftCron <span class="arrow">↗</span></span><span class="row-meta">Swift</span><span class="row-desc">Scheduled and repeating functions made easy, on macOS and Linux.</span></a></li>
-              <li><a class="row" href="https://github.com/rymcol/Server-Side-Swift-Benchmarking"><span class="row-title">Server-Side Swift Benchmarking <span class="arrow">↗</span></span><span class="row-meta">Swift</span><span class="row-desc">Server-side Swift frameworks, benchmarked against Node.js.</span></a></li>
+              <li><a class="row" href="https://github.com/rymcol" rel="noopener noreferrer"><span class="row-title">GitHub · rymcol <span class="arrow">↗</span></span><span class="row-meta">Profile</span><span class="row-desc">Code, experiments and the repos behind the work above.</span></a></li>
+              <li><a class="row" href="https://github.com/init4tech/signet-sdk" rel="noopener noreferrer"><span class="row-title">Signet SDK <span class="arrow">↗</span></span><span class="row-meta">Rust</span><span class="row-desc">Ecosystem crates for the Signet network.</span></a></li>
+              <li><a class="row" href="https://github.com/rareprotocol/core" rel="noopener noreferrer"><span class="row-title">Rare Protocol <span class="arrow">↗</span></span><span class="row-meta">Solidity</span><span class="row-desc">Core smart contracts powering the SuperRare marketplace.</span></a></li>
+              <li><a class="row" href="https://github.com/rymcol/SwiftCron" rel="noopener noreferrer"><span class="row-title">SwiftCron <span class="arrow">↗</span></span><span class="row-meta">Swift</span><span class="row-desc">Scheduled and repeating functions made easy, on macOS and Linux.</span></a></li>
+              <li><a class="row" href="https://github.com/rymcol/Server-Side-Swift-Benchmarking" rel="noopener noreferrer"><span class="row-title">Server-Side Swift Benchmarking <span class="arrow">↗</span></span><span class="row-meta">Swift</span><span class="row-desc">Server-side Swift frameworks, benchmarked against Node.js.</span></a></li>
             </ul>
           </div>
 
           <div class="list">
             <h3>Talks &amp; interviews</h3>
             <ul role="list">
-              <li><a class="row" href="https://www.youtube.com/watch?v=3FvB0N09hCg"><span class="row-title">Hashing It Out #106: SuperRare <span class="arrow">↗</span></span><span class="row-meta">Jul 2021</span><span class="row-desc">Podcast interview on how SuperRare works and where it was heading.</span></a></li>
+              <li><a class="row" href="https://www.youtube.com/watch?v=3FvB0N09hCg" rel="noopener noreferrer"><span class="row-title">Hashing It Out #106: SuperRare <span class="arrow">↗</span></span><span class="row-meta">Jul 2021</span><span class="row-desc">Podcast interview on how SuperRare works and where it was heading.</span></a></li>
               <li><div class="row"><span class="row-title">NFTs &amp; SuperRare, with ACRIA</span><span class="row-meta">Oct 2021</span><span class="row-desc">Panel discussion with Zack Yanger.</span></div></li>
               <li><div class="row"><span class="row-title">The Dialogue: Platform Engineering &amp; DevOps</span><span class="row-meta">Dec 2020</span><span class="row-desc">Harnham's LinkedIn Live series.</span></div></li>
               <li><div class="row"><span class="row-title">Staying Data Secure While Working Flexibly</span><span class="row-meta">Nov 2020</span><span class="row-desc">A discussion with Harnham.</span></div></li>
@@ -730,13 +768,13 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
   <section class="section elsewhere" id="elsewhere" aria-labelledby="elsewhere-title">
     <div class="wrap">
       <h2 id="elsewhere-title">Say <em>hello</em></h2>
-      <p>Follow along to hear when xcv and Percolate ship and Astrolical leaves beta, or just to say hi.</p>
+      <p>I ship quietly and write occasionally. Follow along for when xcv and Percolate leave the bench, when Astrolical leaves beta — or just to say hi.</p>
       <ul class="socials" role="list">
-        <li><a href="https://x.com/rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 2h3.3l-7.2 8.3L22.4 22h-6.7l-5.2-6.8L4.5 22H1.2l7.7-8.8L.8 2h6.8l4.7 6.2L17.8 2Zm-1.2 18h1.8L6.7 3.9H4.7L16.6 20Z"/></svg>X <small>@rymcol</small></a></li>
-        <li><a href="https://github.com/rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>GitHub <small>rymcol</small></a></li>
-        <li><a href="https://linkedin.com/in/rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2ZM8 19H5V9.5h3V19ZM6.5 8.2a1.7 1.7 0 1 1 0-3.5 1.7 1.7 0 0 1 0 3.5ZM19 19h-3v-4.6c0-1.1 0-2.5-1.5-2.5s-1.8 1.2-1.8 2.4V19h-3V9.5h2.9v1.3c.4-.8 1.4-1.5 2.8-1.5 3 0 3.6 2 3.6 4.6V19Z"/></svg>LinkedIn</a></li>
-        <li><a href="https://dribbble.com/rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21Zm6.9 4.9a8.9 8.9 0 0 1 2 5.5c-.3 0-3.3-.7-6.3-.3l-.8-1.8c3.4-1.4 4.9-3.3 5.1-3.4ZM12 3.1c2.2 0 4.3.8 5.9 2.2-.2.2-1.5 2-4.9 3.3-1.6-2.9-3.3-5.2-3.6-5.6a9 9 0 0 1 2.6-.3ZM7.8 4.1c.3.4 2 2.7 3.6 5.5A34.8 34.8 0 0 1 3.3 10a9 9 0 0 1 4.5-5.9ZM3.1 12v-.3c.4 0 5 .1 9.7-1.3l.7 1.5c-3.6 1.2-6.2 4.4-6.6 5A8.9 8.9 0 0 1 3.1 12Zm8.9 8.9c-2 0-3.9-.7-5.5-1.9.2-.4 2.3-4.2 7.4-6l.1-.1a36.6 36.6 0 0 1 1.9 6.8c-1.2.8-2.5 1.2-3.9 1.2Zm5.4-2a38 38 0 0 0-1.8-6.4c2.8-.4 5.2.3 5.5.4a8.9 8.9 0 0 1-3.7 6Z"/></svg>Dribbble</a></li>
-        <li><a href="https://youtube.com/c/RyanCollins"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.7 15V9l5.8 3-5.8 3Z"/></svg>YouTube</a></li>
+        <li><a href="https://x.com/rymcol" rel="noopener noreferrer" aria-label="Ryan Collins on X, @rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 2h3.3l-7.2 8.3L22.4 22h-6.7l-5.2-6.8L4.5 22H1.2l7.7-8.8L.8 2h6.8l4.7 6.2L17.8 2Zm-1.2 18h1.8L6.7 3.9H4.7L16.6 20Z"/></svg>X <small>@rymcol</small></a></li>
+        <li><a href="https://github.com/rymcol" rel="noopener noreferrer" aria-label="Ryan Collins on GitHub, rymcol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>GitHub <small>rymcol</small></a></li>
+        <li><a href="https://www.linkedin.com/in/rymcol" rel="noopener noreferrer" aria-label="Ryan Collins on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2ZM8 19H5V9.5h3V19ZM6.5 8.2a1.7 1.7 0 1 1 0-3.5 1.7 1.7 0 0 1 0 3.5ZM19 19h-3v-4.6c0-1.1 0-2.5-1.5-2.5s-1.8 1.2-1.8 2.4V19h-3V9.5h2.9v1.3c.4-.8 1.4-1.5 2.8-1.5 3 0 3.6 2 3.6 4.6V19Z"/></svg>LinkedIn</a></li>
+        <li><a href="https://dribbble.com/rymcol" rel="noopener noreferrer" aria-label="Ryan Collins on Dribbble"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21Zm6.9 4.9a8.9 8.9 0 0 1 2 5.5c-.3 0-3.3-.7-6.3-.3l-.8-1.8c3.4-1.4 4.9-3.3 5.1-3.4ZM12 3.1c2.2 0 4.3.8 5.9 2.2-.2.2-1.5 2-4.9 3.3-1.6-2.9-3.3-5.2-3.6-5.6a9 9 0 0 1 2.6-.3ZM7.8 4.1c.3.4 2 2.7 3.6 5.5A34.8 34.8 0 0 1 3.3 10a9 9 0 0 1 4.5-5.9ZM3.1 12v-.3c.4 0 5 .1 9.7-1.3l.7 1.5c-3.6 1.2-6.2 4.4-6.6 5A8.9 8.9 0 0 1 3.1 12Zm8.9 8.9c-2 0-3.9-.7-5.5-1.9.2-.4 2.3-4.2 7.4-6l.1-.1a36.6 36.6 0 0 1 1.9 6.8c-1.2.8-2.5 1.2-3.9 1.2Zm5.4-2a38 38 0 0 0-1.8-6.4c2.8-.4 5.2.3 5.5.4a8.9 8.9 0 0 1-3.7 6Z"/></svg>Dribbble</a></li>
+        <li><a href="https://www.youtube.com/c/RyanCollins" rel="noopener noreferrer" aria-label="Ryan Collins on YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.7 15V9l5.8 3-5.8 3Z"/></svg>YouTube</a></li>
       </ul>
     </div>
   </section>
@@ -745,6 +783,11 @@ footer .callsign { font-family: var(--mono); font-size: 13px; letter-spacing: .0
 <footer>
   <div class="wrap">
     <span>© 2026 Ryan Collins · Made by hand in Ontario, Canada. No cookies, no trackers.</span>
+    <nav aria-label="Footer">
+      <a href="#apps">Apps</a>
+      <a href="#about">About</a>
+      <a href="#elsewhere">Hello</a>
+    </nav>
     <span class="callsign">VA3RYC · KO4YVB</span>
   </div>
 </footer>
