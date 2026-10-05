@@ -42,3 +42,8 @@ exactly, so an app change fails loudly instead of producing a wrong screenshot.
 The web root on the server also holds files this repo doesn't own, so the deploy never deletes.
 
 The site before this redesign is tagged `legacy-openclaw-site`.
+
+## Brand pass (`brand/personal-pass`)
+
+Homepage narrative, SEO/social meta (including JSON-LD `Person`), trust links, and light a11y/UX polish — without touching the xcv/Percolate notch demos or layout structure. Favicon and `assets/img/og.png` kept as-is.
+
